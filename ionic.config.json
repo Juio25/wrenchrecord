@@ -1,0 +1,7 @@
+{
+  "name": "WrenchRecord",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,197 @@
+<ion-content [fullscreen]="true" class="login-content">
+
+  <div class="login-container">
+
+```
+<!-- Encabezado -->
+<div class="header-section">
+  <h1>AutoLog</h1>
+  <p>Tu bitácora de mantenimiento vehicular</p>
+</div>
+
+<!-- Selector Login / Registro -->
+<div class="form-switch">
+
+  <span [class.active]="!isRegister">
+    Iniciar sesión
+  </span>
+
+  <input
+    type="checkbox"
+    id="reg-log"
+    class="checkbox"
+    [checked]="isRegister"
+    (change)="toggleForm()"
+  >
+
+  <label for="reg-log">
+    <span></span>
+  </label>
+
+  <span [class.active]="isRegister">
+    Registrarse
+  </span>
+
+</div>
+
+<!-- Tarjeta 3D -->
+<div class="card-3d-wrap">
+
+  <div
+    class="card-3d-wrapper"
+    [class.flipped]="isRegister"
+  >
+
+    <!-- ==================== LOGIN ==================== -->
+    <div class="card-front">
+
+      <div class="center-wrap">
+
+        <div class="form-section">
+
+          <h2>Bienvenido</h2>
+          <p class="form-description">
+            Inicia sesión para consultar la información de tus vehículos.
+          </p>
+
+          <!-- Correo -->
+          <div class="form-group">
+
+            <input
+              type="email"
+              class="form-style"
+              placeholder="Correo electrónico"
+              autocomplete="email"
+            >
+
+            <ion-icon
+              name="mail-outline"
+              class="input-icon">
+            </ion-icon>
+
+          </div>
+
+          <!-- Contraseña -->
+          <div class="form-group">
+
+            <input
+              type="password"
+              class="form-style"
+              placeholder="Contraseña"
+              autocomplete="current-password"
+            >
+
+            <ion-icon
+              name="lock-closed-outline"
+              class="input-icon">
+            </ion-icon>
+
+          </div>
+
+          <ion-button
+            expand="block"
+            class="submit-button"
+            type="button"
+          >
+            Iniciar sesión
+          </ion-button>
+
+          <button
+            type="button"
+            class="forgot-password"
+          >
+            ¿Olvidaste tu contraseña?
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================== REGISTRO ==================== -->
+    <div class="card-back">
+
+      <div class="center-wrap">
+
+        <div class="form-section">
+
+          <h2>Crear cuenta</h2>
+          <p class="form-description">
+            Regístrate para comenzar a administrar tus vehículos.
+          </p>
+
+          <!-- Nombre -->
+          <div class="form-group">
+
+            <input
+              type="text"
+              class="form-style"
+              placeholder="Nombre completo"
+              autocomplete="name"
+            >
+
+            <ion-icon
+              name="person-outline"
+              class="input-icon">
+            </ion-icon>
+
+          </div>
+
+          <!-- Correo -->
+          <div class="form-group">
+
+            <input
+              type="email"
+              class="form-style"
+              placeholder="Correo electrónico"
+              autocomplete="email"
+            >
+
+            <ion-icon
+              name="mail-outline"
+              class="input-icon">
+            </ion-icon>
+
+          </div>
+
+          <!-- Contraseña -->
+          <div class="form-group">
+
+            <input
+              type="password"
+              class="form-style"
+              placeholder="Contraseña"
+              autocomplete="new-password"
+            >
+
+            <ion-icon
+              name="lock-closed-outline"
+              class="input-icon">
+            </ion-icon>
+
+          </div>
+
+          <ion-button
+            expand="block"
+            class="submit-button"
+            type="button"
+          >
+            Crear cuenta
+          </ion-button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+```
+
+  </div>
+
+</ion-content>
