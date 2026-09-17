@@ -141,7 +141,7 @@ position: relative;
 width: 100%;
 max-width: 420px;
 
-height: 480px;
+height: 540px;
 
 perspective: 1000px;
 }
@@ -397,6 +397,10 @@ text-transform: uppercase;
 letter-spacing: 0.7px;
 }
 
+.submit-button ion-spinner {
+color: #102770;
+}
+
 /* =========================================================
 RECUPERAR CONTRASEÑA
 ========================================================= */
@@ -431,6 +435,85 @@ color: #ffeba7;
 }
 
 /* =========================================================
+MODAL DE RESULTADO (éxito / error del registro)
+========================================================= */
+
+ion-modal.result-modal {
+--width: 88%;
+--max-width: 340px;
+--height: auto;
+--border-radius: 18px;
+--background: transparent;
+--box-shadow: none;
+}
+
+.modal-content {
+
+background-color: #2a2b38;
+
+border-radius: 18px;
+
+padding: 32px 24px;
+box-sizing: border-box;
+
+text-align: center;
+
+color: #c4c3ca;
+
+font-family: 'Poppins', sans-serif;
+}
+
+.modal-content ion-icon {
+font-size: 50px;
+
+margin-bottom: 14px;
+}
+
+.modal-content.exito ion-icon {
+color: #2dd36f;
+}
+
+.modal-content.error ion-icon {
+color: #eb445a;
+}
+
+.modal-content h2 {
+
+margin: 0 0 8px;
+
+color: #ffffff;
+
+font-size: 18px;
+font-weight: 700;
+}
+
+.modal-content p {
+
+margin: 0 0 22px;
+
+font-size: 13px;
+line-height: 1.6;
+
+color: #9d9ca5;
+}
+
+.modal-button {
+
+--background: #ffeba7;
+--background-hover: #ffeba7;
+--background-activated: #102770;
+
+--color: #102770;
+
+--border-radius: 8px;
+
+font-family: 'Poppins', sans-serif;
+
+font-size: 13px;
+font-weight: 600;
+}
+
+/* =========================================================
 RESPONSIVE
 ========================================================= */
 
@@ -445,7 +528,7 @@ font-size: 26px;
 }
 
 .card-3d-wrap {
-height: 470px;
+height: 530px;
 }
 
 .center-wrap {

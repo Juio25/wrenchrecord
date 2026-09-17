@@ -1,17 +1,138 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="dashboard-content">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="dashboard-container">
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+    <!-- ==================== ENCABEZADO ==================== -->
+    <div class="dashboard-header">
+      <div>
+        <p class="greeting">Hola de nuevo</p>
+        <h1>Tu garage</h1>
+      </div>
+
+      <button class="icon-button" (click)="onNotificaciones()">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="badge-dot" *ngIf="tieneNotificaciones"></span>
+      </button>
+    </div>
+
+    <!-- ==================== MIS VEHÍCULOS (scroll horizontal) ==================== -->
+    <div class="vehicles-section">
+
+      <div class="section-title-row">
+        <h2>Mis vehículos</h2>
+        <button class="text-link" (click)="onAgregarVehiculo()">+ Agregar</button>
+      </div>
+
+      <div class="vehicles-scroll">
+
+        <article
+          class="vehicle-card"
+          *ngFor="let v of vehiculos"
+          (click)="verVehiculo(v)"
+        >
+          <div class="vehicle-icon">
+            <ion-icon [name]="v.icono"></ion-icon>
+          </div>
+
+          <h3>{{ v.nombre }}</h3>
+          <p>{{ v.marca }} {{ v.modelo }}</p>
+
+          <div class="vehicle-meta">
+            <ion-icon name="speedometer-outline"></ion-icon>
+            <span>{{ v.kilometraje | number }} km</span>
+          </div>
+        </article>
+
+        <button class="vehicle-card add-vehicle" (click)="onAgregarVehiculo()">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          <span>Nuevo vehículo</span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ==================== RECORDATORIOS DE MANTENIMIENTO ==================== -->
+    <div class="info-card reminders-section">
+
+      <div class="section-title-row">
+        <h2>Recordatorios</h2>
+        <button class="text-link" (click)="verTodosRecordatorios()">Ver todos</button>
+      </div>
+
+      <div class="empty-state" *ngIf="recordatorios.length === 0">
+        <ion-icon name="alarm-outline"></ion-icon>
+        <p>No tienes recordatorios pendientes.</p>
+      </div>
+
+      <div
+        class="reminder-item"
+        *ngFor="let r of recordatorios"
+      >
+        <div class="reminder-icon" [ngClass]="r.estado">
+          <ion-icon name="build-outline"></ion-icon>
+        </div>
+
+        <div class="reminder-info">
+          <h3>{{ r.titulo }}</h3>
+          <p>{{ r.vehiculo }} · {{ r.detalle }}</p>
+
+          <ion-progress-bar
+            [value]="r.progreso"
+            [color]="r.estado === 'vencido' ? 'danger' : (r.estado === 'proximo' ? 'warning' : 'success')"
+          ></ion-progress-bar>
+        </div>
+
+        <ion-badge [color]="r.estado === 'vencido' ? 'danger' : (r.estado === 'proximo' ? 'warning' : 'success')">
+          {{ r.estadoTexto }}
+        </ion-badge>
+      </div>
+
+    </div>
+
+    <!-- ==================== HISTORIAL RECIENTE ==================== -->
+    <div class="info-card history-section">
+
+      <div class="section-title-row">
+        <h2>Historial reciente</h2>
+        <button class="text-link" (click)="verHistorialCompleto()">Ver todo</button>
+      </div>
+
+      <div class="empty-state" *ngIf="historial.length === 0">
+        <ion-icon name="time-outline"></ion-icon>
+        <p>Aún no registras servicios. ¡Agrega el primero!</p>
+      </div>
+
+      <div class="history-item" *ngFor="let h of historial">
+
+        <div class="history-thumb">
+          <ion-icon name="hardware-chip-outline" *ngIf="h.fotos === 0"></ion-icon>
+          <ng-container *ngIf="h.fotos > 0">
+            <ion-icon name="images-outline"></ion-icon>
+            <span class="photo-count">{{ h.fotos }}</span>
+          </ng-container>
+        </div>
+
+        <div class="history-details">
+          <h3>{{ h.tipo }}</h3>
+          <p>{{ h.vehiculo }}</p>
+        </div>
+
+        <div class="history-date">
+          {{ h.fecha }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Botón flotante para registrar un nuevo servicio -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="onNuevoServicio()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

@@ -1,17 +1,171 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="consulta-content">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="consulta-container">
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+    <!-- Encabezado -->
+    <div class="header-section">
+      <h1>Consulta de Usuarios</h1>
+      <p>Busca la información de los usuarios registrados en el sistema</p>
+    </div>
+
+    <!-- ==================== FORMULARIO DE CONSULTA ==================== -->
+    <div class="form-card">
+
+      <form (ngSubmit)="onConsultar()" #consultaForm="ngForm">
+
+        <h2>Filtros de búsqueda</h2>
+        <p class="form-description">
+          Completa uno o más campos y presiona "Consultar" para buscar en la base de datos.
+        </p>
+
+        <!-- Nombre -->
+        <div class="form-group">
+
+          <input
+            type="text"
+            class="form-style"
+            placeholder="Nombre"
+            name="nombre"
+            autocomplete="given-name"
+            [(ngModel)]="filtros.nombre"
+          >
+
+          <ion-icon
+            name="person-outline"
+            class="input-icon">
+          </ion-icon>
+
+        </div>
+
+        <!-- Apellido -->
+        <div class="form-group">
+
+          <input
+            type="text"
+            class="form-style"
+            placeholder="Apellido"
+            name="apellido"
+            autocomplete="family-name"
+            [(ngModel)]="filtros.apellido"
+          >
+
+          <ion-icon
+            name="people-outline"
+            class="input-icon">
+          </ion-icon>
+
+        </div>
+
+        <!-- Correo -->
+        <div class="form-group">
+
+          <input
+            type="email"
+            class="form-style"
+            placeholder="Correo electrónico"
+            name="correo"
+            autocomplete="email"
+            [(ngModel)]="filtros.correo"
+          >
+
+          <ion-icon
+            name="mail-outline"
+            class="input-icon">
+          </ion-icon>
+
+        </div>
+
+        <!-- ID de usuario -->
+        <div class="form-group">
+
+          <input
+            type="text"
+            class="form-style"
+            placeholder="ID de usuario (opcional)"
+            name="idUsuario"
+            [(ngModel)]="filtros.idUsuario"
+          >
+
+          <ion-icon
+            name="finger-print-outline"
+            class="input-icon">
+          </ion-icon>
+
+        </div>
+
+        <!-- Error de la consulta (sin filtros, falla de conexión, etc.) -->
+        <p class="error-text" *ngIf="errorConsulta && resultados.length === 0">
+          {{ errorConsulta }}
+        </p>
+
+        <ion-button
+          expand="block"
+          class="submit-button"
+          type="submit"
+          [disabled]="cargando"
+        >
+          <ion-spinner *ngIf="cargando" name="crescent" slot="start"></ion-spinner>
+          <ion-icon *ngIf="!cargando" name="search-outline" slot="start"></ion-icon>
+          {{ cargando ? 'Consultando...' : 'Consultar' }}
+        </ion-button>
+
+        <button
+          type="button"
+          class="clear-filters"
+          (click)="limpiarFiltros()"
+        >
+          Limpiar filtros
+        </button>
+
+      </form>
+
+    </div>
+
+    <!-- ==================== RESULTADOS DE LA CONSULTA ==================== -->
+    <div class="results-card">
+
+      <h2>Resultados</h2>
+
+      <!-- Estado vacío / sin búsqueda todavía -->
+      <div class="empty-state" *ngIf="!cargando && resultados.length === 0">
+        <ion-icon name="people-outline"></ion-icon>
+        <p *ngIf="!seHaConsultado">
+          Aún no hay resultados. Realiza una consulta para ver la información de los usuarios registrados.
+        </p>
+        <p *ngIf="seHaConsultado && !errorConsulta">
+          No se encontraron usuarios que coincidan con los filtros ingresados.
+        </p>
+      </div>
+
+      <!-- Lista de usuarios -->
+      <ion-list *ngIf="!cargando && resultados.length > 0" class="results-list">
+
+        <ion-item
+          *ngFor="let usuario of resultados"
+          lines="full"
+          class="result-item"
+        >
+
+          <ion-avatar slot="start">
+            <ion-icon name="person-circle-outline"></ion-icon>
+          </ion-avatar>
+
+          <ion-label>
+            <h3>{{ usuario.nombre }} {{ usuario.apellido }}</h3>
+            <p>{{ usuario.correo }}</p>
+            <p>ID: {{ usuario.id_usuario }}</p>
+          </ion-label>
+
+          <ion-badge slot="end" color="danger" *ngIf="usuario.activo === 0">
+            Inactivo
+          </ion-badge>
+
+        </ion-item>
+
+      </ion-list>
+
+    </div>
+
+  </div>
+
 </ion-content>
