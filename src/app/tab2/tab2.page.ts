@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
 import { UsuariosService, FiltrosConsulta, UsuarioResultado } from '../services/usuarios.service';
 
 @Component({
@@ -19,15 +19,12 @@ export class ConsultaPage {
   resultados: UsuarioResultado[] = [];
   cargando: boolean = false;
   seHaConsultado: boolean = false;
-
-  // Mensaje de error a nivel de consulta (ej. "ingresa al menos un
-  // filtro" o problemas de conexión). No es un error por usuario,
-  // sino de la búsqueda en sí.
   errorConsulta: string | null = null;
 
   constructor(
     private usuariosService: UsuariosService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
   ) {}
 
   onConsultar(): void {
@@ -48,8 +45,6 @@ export class ConsultaPage {
 
     this.usuariosService.consultar(this.filtros).subscribe({
       next: (respuesta) => {
-        // Forzamos que esto corra dentro de la zona de Angular, igual
-        // que en tab1, para que la vista se actualice de inmediato.
         this.ngZone.run(() => {
           this.cargando = false;
           this.seHaConsultado = true;
@@ -60,6 +55,11 @@ export class ConsultaPage {
             this.resultados = [];
             this.errorConsulta = respuesta.mensaje;
           }
+
+          // Sin esto, si la app corre en modo zoneless, esta pantalla
+          // se queda "cargando" para siempre — nada más en tab2
+          // dispara un ciclo de detección de cambios por su cuenta.
+          this.cdr.detectChanges();
         });
       },
       error: (error) => {
@@ -69,6 +69,7 @@ export class ConsultaPage {
           this.resultados = [];
           this.errorConsulta = error?.error?.mensaje
             || 'No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.';
+          this.cdr.detectChanges();
         });
       }
     });

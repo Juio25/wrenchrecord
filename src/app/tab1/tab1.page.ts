@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, RegistroUsuario, LoginUsuario } from '../services/auth.service';
 
@@ -39,7 +39,8 @@ export class LoginPage {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
   ) {}
 
   toggleForm(): void {
@@ -64,13 +65,13 @@ export class LoginPage {
 
     this.authService.login(this.login).subscribe({
       next: (respuesta) => {
-        // Forzamos que esto corra dentro de la zona de Angular.
-        // Sin esto, en algunos entornos la respuesta llega "fuera" de
-        // NgZone y la vista no se refresca hasta que algo más (como
-        // abrir DevTools) dispara un ciclo de detección de cambios.
         this.ngZone.run(() => {
           this.enviandoLogin = false;
           this.mostrarResultado('login', respuesta.exito, respuesta.mensaje);
+          // Forzamos el repintado explícitamente: si la app corre en
+          // modo zoneless, nada más va a avisarle a Angular que estos
+          // valores cambiaron.
+          this.cdr.detectChanges();
         });
       },
       error: (error) => {
@@ -79,6 +80,7 @@ export class LoginPage {
           const mensaje = error?.error?.mensaje
             || 'No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.';
           this.mostrarResultado('login', false, mensaje);
+          this.cdr.detectChanges();
         });
       }
     });
@@ -110,6 +112,8 @@ export class LoginPage {
             this.registro = { nombre: '', apellido: '', correo: '', contrasena: '' };
             this.isRegister = false; // regresa a la cara de login tras crear la cuenta
           }
+
+          this.cdr.detectChanges();
         });
       },
       error: (error) => {
@@ -118,6 +122,7 @@ export class LoginPage {
           const mensaje = error?.error?.mensaje
             || 'No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.';
           this.mostrarResultado('registro', false, mensaje);
+          this.cdr.detectChanges();
         });
       }
     });
@@ -132,10 +137,6 @@ export class LoginPage {
     this.mostrarModal = true;
   }
 
-  // Se llama únicamente desde (didDismiss) del ion-modal, una vez que
-  // el modal YA terminó su animación de cierre (ver tab1.page.html:
-  // el botón "Entendido" llama a resultModal.dismiss() directamente,
-  // no a este método).
   cerrarModal(): void {
     this.mostrarModal = false;
 
@@ -146,6 +147,7 @@ export class LoginPage {
     }
 
     this.modalAccion = null;
+    this.cdr.detectChanges();
   }
 
 }

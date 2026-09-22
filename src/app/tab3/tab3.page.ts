@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { ViewWillEnter } from '@ionic/angular';
+import { AuthService, UsuarioSesion } from '../services/auth.service';
 
 interface Vehiculo {
   id: string;
@@ -33,13 +36,11 @@ interface ServicioHistorial {
   styleUrls: ['./tab3.page.scss'],
   standalone: false
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, ViewWillEnter {
+
+  usuario: UsuarioSesion | null = null;
 
   tieneNotificaciones: boolean = true;
-
-  // TODO: reemplazar estos arreglos de ejemplo por los datos
-  // reales que vengan de la API/BD (vehículos, recordatorios e
-  // historial de servicios del usuario autenticado).
 
   vehiculos: Vehiculo[] = [
     {
@@ -107,9 +108,39 @@ export class DashboardPage implements OnInit {
     }
   ];
 
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cargarSesion();
+  }
+
+  ionViewWillEnter(): void {
+    this.cargarSesion();
+  }
+
+  private cargarSesion(): void {
+    this.usuario = this.authService.obtenerSesion();
+
+    if (!this.usuario) {
+      // TODO: ajusta esta ruta si tu tab de login no es "tab1".
+      this.router.navigateByUrl('/tabs/tab1');
+      return;
+    }
+
+    // Este es el que arregla el "Invitado" que no cambiaba: nada más
+    // avisa a Angular que este dato ya está listo para pintarse.
+    this.cdr.detectChanges();
+  }
+
+  onCerrarSesion(): void {
+    this.authService.cerrarSesion();
+    this.usuario = null;
+    this.router.navigateByUrl('/tabs/tab1');
+  }
 
   verVehiculo(vehiculo: Vehiculo): void {
     // TODO: navegar al perfil / historial completo del vehículo
@@ -121,7 +152,6 @@ export class DashboardPage implements OnInit {
 
   onNuevoServicio(): void {
     // TODO: navegar al formulario de registro de servicio
-    // (con evidencia fotográfica y datos del vehículo)
   }
 
   verTodosRecordatorios(): void {
@@ -134,7 +164,6 @@ export class DashboardPage implements OnInit {
 
   onNotificaciones(): void {
     this.tieneNotificaciones = false;
-    // TODO: navegar a la pantalla de notificaciones
   }
 
 }

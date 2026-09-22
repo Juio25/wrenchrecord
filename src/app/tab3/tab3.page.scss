@@ -43,6 +43,10 @@ ENCABEZADO
   color: #9d9ca5;
 }
 
+.dashboard-header-texto {
+  min-width: 0;
+}
+
 .dashboard-header h1 {
   margin: 4px 0 0;
 
@@ -50,6 +54,18 @@ ENCABEZADO
   font-weight: 700;
 
   color: #ffffff;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-actions {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .icon-button {

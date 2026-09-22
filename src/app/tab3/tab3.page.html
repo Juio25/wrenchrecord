@@ -4,15 +4,23 @@
 
     <!-- ==================== ENCABEZADO ==================== -->
     <div class="dashboard-header">
-      <div>
+      <div class="dashboard-header-texto">
         <p class="greeting">Hola de nuevo</p>
-        <h1>Tu garage</h1>
+        <h1>{{ usuario?.nombre || 'Invitado' }}</h1>
       </div>
 
-      <button class="icon-button" (click)="onNotificaciones()">
-        <ion-icon name="notifications-outline"></ion-icon>
-        <span class="badge-dot" *ngIf="tieneNotificaciones"></span>
-      </button>
+      <div class="header-actions">
+
+        <button class="icon-button" (click)="onNotificaciones()">
+          <ion-icon name="notifications-outline"></ion-icon>
+          <span class="badge-dot" *ngIf="tieneNotificaciones"></span>
+        </button>
+
+        <button class="icon-button" (click)="onCerrarSesion()">
+          <ion-icon name="log-out-outline"></ion-icon>
+        </button>
+
+      </div>
     </div>
 
     <!-- ==================== MIS VEHÍCULOS (scroll horizontal) ==================== -->
