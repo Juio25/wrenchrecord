@@ -126,8 +126,8 @@ export class DashboardPage implements OnInit, ViewWillEnter {
     this.usuario = this.authService.obtenerSesion();
 
     if (!this.usuario) {
-      // TODO: ajusta esta ruta si tu tab de login no es "tab1".
-      this.router.navigateByUrl('/tabs/tab1');
+      // Ya no vive dentro de las tabs: es una página independiente.
+      this.router.navigateByUrl('/login');
       return;
     }
 
@@ -139,7 +139,7 @@ export class DashboardPage implements OnInit, ViewWillEnter {
   onCerrarSesion(): void {
     this.authService.cerrarSesion();
     this.usuario = null;
-    this.router.navigateByUrl('/tabs/tab1');
+    this.router.navigateByUrl('/login');
   }
 
   verVehiculo(vehiculo: Vehiculo): void {

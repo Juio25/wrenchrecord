@@ -1,0 +1,550 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* =========================================================
+CONTENEDOR PRINCIPAL
+========================================================= */
+
+.login-content {
+--background: #1f2029;
+font-family: 'Poppins', sans-serif;
+color: #c4c3ca;
+}
+
+.login-container {
+min-height: 100%;
+width: 100%;
+
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+
+padding: 35px 20px;
+box-sizing: border-box;
+}
+
+/* =========================================================
+ENCABEZADO
+========================================================= */
+
+.header-section {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.header-section h1 {
+margin: 0;
+
+font-size: 30px;
+font-weight: 700;
+
+color: #ffffff;
+}
+
+.header-section p {
+margin: 6px 0 0;
+
+font-size: 13px;
+font-weight: 400;
+
+color: #9d9ca5;
+}
+
+/* =========================================================
+SELECTOR LOGIN / REGISTRO
+========================================================= */
+
+.form-switch {
+display: flex;
+align-items: center;
+justify-content: center;
+
+gap: 12px;
+
+margin-bottom: 20px;
+
+font-size: 13px;
+font-weight: 600;
+
+text-transform: uppercase;
+}
+
+.form-switch span {
+color: #777782;
+
+transition: all 200ms ease;
+}
+
+.form-switch span.active {
+color: #ffffff;
+}
+
+/* Checkbox oculto */
+
+.checkbox {
+position: absolute;
+opacity: 0;
+pointer-events: none;
+}
+
+/* Interruptor */
+
+.form-switch label {
+position: relative;
+
+display: block;
+
+width: 58px;
+height: 30px;
+
+border-radius: 20px;
+
+background-color: #3b3c48;
+
+cursor: pointer;
+
+transition: all 200ms ease;
+}
+
+/* Círculo del interruptor */
+
+.form-switch label span {
+position: absolute;
+
+width: 24px;
+height: 24px;
+
+top: 3px;
+left: 3px;
+
+border-radius: 50%;
+
+background-color: #ffeba7;
+
+transition: transform 400ms ease;
+}
+
+/* Movimiento del switch */
+
+.checkbox:checked + label span {
+transform: translateX(28px);
+}
+
+/* =========================================================
+TARJETA 3D
+========================================================= */
+
+.card-3d-wrap {
+
+position: relative;
+
+width: 100%;
+max-width: 420px;
+
+height: 540px;
+
+perspective: 1000px;
+}
+
+.card-3d-wrapper {
+
+position: absolute;
+
+width: 100%;
+height: 100%;
+
+top: 0;
+left: 0;
+
+transform-style: preserve-3d;
+
+transition: transform 600ms ease;
+}
+
+/* Cuando Angular agrega la clase flipped */
+
+.card-3d-wrapper.flipped {
+transform: rotateY(180deg);
+}
+
+/* =========================================================
+CARAS DE LA TARJETA
+========================================================= */
+
+.card-front,
+.card-back {
+
+position: absolute;
+
+width: 100%;
+height: 100%;
+
+top: 0;
+left: 0;
+
+border-radius: 18px;
+
+background-color: #2a2b38;
+
+box-shadow:
+0 20px 45px rgba(0, 0, 0, 0.30);
+
+backface-visibility: hidden;
+-webkit-backface-visibility: hidden;
+
+transform-style: preserve-3d;
+
+overflow: hidden;
+}
+
+/* Pequeño detalle visual */
+
+.card-front::before,
+.card-back::before {
+
+content: '';
+
+position: absolute;
+
+width: 220px;
+height: 220px;
+
+top: -100px;
+right: -80px;
+
+border-radius: 50%;
+
+background: rgba(255, 235, 167, 0.05);
+}
+
+.card-front::after,
+.card-back::after {
+
+content: '';
+
+position: absolute;
+
+width: 180px;
+height: 180px;
+
+bottom: -100px;
+left: -70px;
+
+border-radius: 50%;
+
+background: rgba(16, 39, 112, 0.15);
+}
+
+.card-back {
+transform: rotateY(180deg);
+}
+
+/* =========================================================
+CONTENIDO DE LA TARJETA
+========================================================= */
+
+.center-wrap {
+
+position: relative;
+
+width: 100%;
+height: 100%;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+padding: 30px;
+
+box-sizing: border-box;
+
+z-index: 10;
+}
+
+.form-section {
+width: 100%;
+}
+
+.form-section h2 {
+
+margin: 0 0 8px;
+
+text-align: center;
+
+color: #ffffff;
+
+font-size: 25px;
+font-weight: 600;
+}
+
+.form-description {
+
+margin: 0 auto 25px;
+
+max-width: 320px;
+
+text-align: center;
+
+color: #9d9ca5;
+
+font-size: 12px;
+line-height: 1.6;
+}
+
+/* =========================================================
+INPUTS
+========================================================= */
+
+.form-group {
+
+position: relative;
+
+width: 100%;
+
+margin-bottom: 14px;
+}
+
+.form-style {
+
+width: 100%;
+height: 50px;
+
+box-sizing: border-box;
+
+padding: 0 18px 0 52px;
+
+border: none;
+border-radius: 8px;
+
+outline: none;
+
+color: #ffffff;
+
+background-color: #1f2029;
+
+font-family: 'Poppins', sans-serif;
+
+font-size: 13px;
+font-weight: 400;
+
+box-shadow:
+0 4px 10px rgba(0, 0, 0, 0.20);
+
+transition: all 200ms ease;
+}
+
+.form-style:focus {
+
+box-shadow:
+0 0 0 2px rgba(255, 235, 167, 0.35),
+0 4px 10px rgba(0, 0, 0, 0.20);
+}
+
+.form-style::placeholder {
+
+color: #777782;
+
+opacity: 1;
+}
+
+/* =========================================================
+ICONOS
+========================================================= */
+
+.input-icon {
+
+position: absolute;
+
+top: 50%;
+left: 17px;
+
+transform: translateY(-50%);
+
+width: 21px;
+height: 21px;
+
+color: #ffeba7;
+
+z-index: 2;
+}
+
+/* =========================================================
+BOTÓN
+========================================================= */
+
+.submit-button {
+
+margin-top: 20px;
+
+--background: #ffeba7;
+--background-hover: #ffeba7;
+--background-activated: #102770;
+
+--color: #102770;
+
+--border-radius: 8px;
+
+--box-shadow:
+0 8px 20px rgba(255, 235, 167, 0.15);
+
+font-family: 'Poppins', sans-serif;
+
+font-size: 13px;
+font-weight: 600;
+
+text-transform: uppercase;
+
+letter-spacing: 0.7px;
+}
+
+.submit-button ion-spinner {
+color: #102770;
+}
+
+/* =========================================================
+RECUPERAR CONTRASEÑA
+========================================================= */
+
+.forgot-password {
+
+display: block;
+
+width: 100%;
+
+margin-top: 18px;
+
+padding: 0;
+
+border: none;
+
+background: transparent;
+
+color: #9d9ca5;
+
+font-family: 'Poppins', sans-serif;
+
+font-size: 12px;
+
+cursor: pointer;
+
+transition: color 200ms ease;
+}
+
+.forgot-password:hover {
+color: #ffeba7;
+}
+
+/* =========================================================
+MODAL DE RESULTADO (éxito / error del registro)
+========================================================= */
+
+ion-modal.result-modal {
+--width: 88%;
+--max-width: 340px;
+--height: auto;
+--border-radius: 18px;
+--background: transparent;
+--box-shadow: none;
+}
+
+.modal-content {
+
+background-color: #2a2b38;
+
+border-radius: 18px;
+
+padding: 32px 24px;
+box-sizing: border-box;
+
+text-align: center;
+
+color: #c4c3ca;
+
+font-family: 'Poppins', sans-serif;
+}
+
+.modal-content ion-icon {
+font-size: 50px;
+
+margin-bottom: 14px;
+}
+
+.modal-content.exito ion-icon {
+color: #2dd36f;
+}
+
+.modal-content.error ion-icon {
+color: #eb445a;
+}
+
+.modal-content h2 {
+
+margin: 0 0 8px;
+
+color: #ffffff;
+
+font-size: 18px;
+font-weight: 700;
+}
+
+.modal-content p {
+
+margin: 0 0 22px;
+
+font-size: 13px;
+line-height: 1.6;
+
+color: #9d9ca5;
+}
+
+.modal-button {
+
+--background: #ffeba7;
+--background-hover: #ffeba7;
+--background-activated: #102770;
+
+--color: #102770;
+
+--border-radius: 8px;
+
+font-family: 'Poppins', sans-serif;
+
+font-size: 13px;
+font-weight: 600;
+}
+
+/* =========================================================
+RESPONSIVE
+========================================================= */
+
+@media (max-width: 380px) {
+
+.login-container {
+padding: 25px 15px;
+}
+
+.header-section h1 {
+font-size: 26px;
+}
+
+.card-3d-wrap {
+height: 530px;
+}
+
+.center-wrap {
+padding: 25px 20px;
+}
+
+}
+
+@media (min-width: 600px) {
+
+.login-container {
+padding: 40px;
+}
+
+.card-3d-wrap {
+max-width: 440px;
+}
+
+}

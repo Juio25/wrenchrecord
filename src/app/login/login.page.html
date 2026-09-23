@@ -1,0 +1,281 @@
+<ion-content [fullscreen]="true" class="login-content">
+
+  <div class="login-container">
+
+    <!-- Encabezado -->
+    <div class="header-section">
+      <h1>AutoLog</h1>
+      <p>Tu bitácora de mantenimiento vehicular</p>
+    </div>
+
+    <!-- Selector Login / Registro -->
+    <div class="form-switch">
+
+      <span [class.active]="!isRegister">
+        Iniciar sesión
+      </span>
+
+      <input
+        type="checkbox"
+        id="reg-log"
+        class="checkbox"
+        [checked]="isRegister"
+        (change)="toggleForm()"
+      >
+
+      <label for="reg-log">
+        <span></span>
+      </label>
+
+      <span [class.active]="isRegister">
+        Registrarse
+      </span>
+
+    </div>
+
+    <!-- Tarjeta 3D -->
+    <div class="card-3d-wrap">
+
+      <div
+        class="card-3d-wrapper"
+        [class.flipped]="isRegister"
+      >
+
+        <!-- ==================== LOGIN ==================== -->
+        <div class="card-front">
+
+          <div class="center-wrap">
+
+            <div class="form-section">
+
+              <h2>Bienvenido</h2>
+              <p class="form-description">
+                Inicia sesión para consultar la información de tus vehículos.
+              </p>
+
+              <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+
+                <!-- Correo -->
+                <div class="form-group">
+
+                  <input
+                    type="email"
+                    class="form-style"
+                    placeholder="Correo electrónico"
+                    name="correoLogin"
+                    autocomplete="email"
+                    required
+                    [(ngModel)]="login.correo"
+                  >
+
+                  <ion-icon
+                    name="mail-outline"
+                    class="input-icon">
+                  </ion-icon>
+
+                </div>
+
+                <!-- Contraseña -->
+                <div class="form-group">
+
+                  <input
+                    type="password"
+                    class="form-style"
+                    placeholder="Contraseña"
+                    name="contrasenaLogin"
+                    autocomplete="current-password"
+                    required
+                    [(ngModel)]="login.contrasena"
+                  >
+
+                  <ion-icon
+                    name="lock-closed-outline"
+                    class="input-icon">
+                  </ion-icon>
+
+                </div>
+
+                <ion-button
+                  expand="block"
+                  class="submit-button"
+                  type="submit"
+                  [disabled]="enviandoLogin"
+                >
+                  <ion-spinner *ngIf="enviandoLogin" name="crescent"></ion-spinner>
+                  <span *ngIf="!enviandoLogin">Iniciar sesión</span>
+                </ion-button>
+
+                <button
+                  type="button"
+                  class="forgot-password"
+                >
+                  ¿Olvidaste tu contraseña?
+                </button>
+
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================== REGISTRO ==================== -->
+        <div class="card-back">
+
+          <div class="center-wrap">
+
+            <div class="form-section">
+
+              <h2>Crear cuenta</h2>
+              <p class="form-description">
+                Regístrate para comenzar a administrar tus vehículos.
+              </p>
+
+              <form (ngSubmit)="onRegistrar()" #registroForm="ngForm">
+
+                <!-- Nombre -->
+                <div class="form-group">
+
+                  <input
+                    type="text"
+                    class="form-style"
+                    placeholder="Nombre"
+                    name="nombre"
+                    autocomplete="given-name"
+                    required
+                    [(ngModel)]="registro.nombre"
+                  >
+
+                  <ion-icon
+                    name="person-outline"
+                    class="input-icon">
+                  </ion-icon>
+
+                </div>
+
+                <!-- Apellido -->
+                <div class="form-group">
+
+                  <input
+                    type="text"
+                    class="form-style"
+                    placeholder="Apellido"
+                    name="apellido"
+                    autocomplete="family-name"
+                    required
+                    [(ngModel)]="registro.apellido"
+                  >
+
+                  <ion-icon
+                    name="people-outline"
+                    class="input-icon">
+                  </ion-icon>
+
+                </div>
+
+                <!-- Correo -->
+                <div class="form-group">
+
+                  <input
+                    type="email"
+                    class="form-style"
+                    placeholder="Correo electrónico"
+                    name="correo"
+                    autocomplete="email"
+                    required
+                    [(ngModel)]="registro.correo"
+                  >
+
+                  <ion-icon
+                    name="mail-outline"
+                    class="input-icon">
+                  </ion-icon>
+
+                </div>
+
+                <!-- Contraseña -->
+                <div class="form-group">
+
+                  <input
+                    type="password"
+                    class="form-style"
+                    placeholder="Contraseña"
+                    name="contrasena"
+                    autocomplete="new-password"
+                    required
+                    minlength="6"
+                    [(ngModel)]="registro.contrasena"
+                  >
+
+                  <ion-icon
+                    name="lock-closed-outline"
+                    class="input-icon">
+                  </ion-icon>
+
+                </div>
+
+                <ion-button
+                  expand="block"
+                  class="submit-button"
+                  type="submit"
+                  [disabled]="enviandoRegistro"
+                >
+                  <ion-spinner *ngIf="enviandoRegistro" name="crescent"></ion-spinner>
+                  <span *ngIf="!enviandoRegistro">Crear cuenta</span>
+                </ion-button>
+
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ==================== MODAL DE RESULTADO (éxito / error) ==================== -->
+  <!--
+    #resultModal: referencia local al componente del modal.
+    El botón "Entendido" llama a resultModal.dismiss() DIRECTAMENTE
+    (una llamada imperativa al componente, no depende de que Angular
+    vuelva a detectar cambios para reflejar [isOpen]="false").
+    (didDismiss) sigue siendo el único lugar donde se actualiza el
+    estado del componente y se decide si hay que navegar.
+  -->
+  <ion-modal
+    #resultModal
+    class="result-modal"
+    [isOpen]="mostrarModal"
+    (didDismiss)="cerrarModal()"
+  >
+    <ng-template>
+      <div class="modal-content" [class.exito]="modalExito" [class.error]="!modalExito">
+
+        <ion-icon
+          [name]="modalExito ? 'checkmark-circle-outline' : 'alert-circle-outline'">
+        </ion-icon>
+
+        <h2>{{ modalExito ? '¡Listo!' : 'Ocurrió un problema' }}</h2>
+
+        <p>{{ modalMensaje }}</p>
+
+        <ion-button
+          expand="block"
+          class="modal-button"
+          (click)="resultModal.dismiss()"
+        >
+          Entendido
+        </ion-button>
+
+      </div>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>
