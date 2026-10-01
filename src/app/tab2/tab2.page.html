@@ -1,5 +1,8 @@
 <ion-content [fullscreen]="true" class="consulta-content">
 
+  <!-- Offline banner – shown automatically when device has no connectivity -->
+  <app-offline-banner></app-offline-banner>
+
   <div class="consulta-container">
 
     <!-- Encabezado -->
@@ -126,6 +129,12 @@
 
       <h2>Resultados</h2>
 
+      <!-- Cache notice -->
+      <p class="cache-notice" *ngIf="desdeCache">
+        <ion-icon name="time-outline"></ion-icon>
+        Mostrando datos guardados (sin conexión al servidor).
+      </p>
+
       <!-- Estado vacío / sin búsqueda todavía -->
       <div class="empty-state" *ngIf="!cargando && resultados.length === 0">
         <ion-icon name="people-outline"></ion-icon>
@@ -169,3 +178,4 @@
   </div>
 
 </ion-content>
+

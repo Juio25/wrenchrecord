@@ -20,6 +20,7 @@ export class ConsultaPage {
   cargando: boolean = false;
   seHaConsultado: boolean = false;
   errorConsulta: string | null = null;
+  desdeCache: boolean = false;   // true when results come from local cache
 
   constructor(
     private usuariosService: UsuariosService,
@@ -48,6 +49,7 @@ export class ConsultaPage {
         this.ngZone.run(() => {
           this.cargando = false;
           this.seHaConsultado = true;
+          this.desdeCache = !!respuesta.desdeCahe;
 
           if (respuesta.exito) {
             this.resultados = respuesta.usuarios;
@@ -67,8 +69,9 @@ export class ConsultaPage {
           this.cargando = false;
           this.seHaConsultado = true;
           this.resultados = [];
+          this.desdeCache = false;
           this.errorConsulta = error?.error?.mensaje
-            || 'No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.';
+            || 'No se pudo conectar con el servidor. Verifica la IP configurada en el login y que XAMPP esté corriendo.';
           this.cdr.detectChanges();
         });
       }
@@ -85,6 +88,7 @@ export class ConsultaPage {
     this.resultados = [];
     this.seHaConsultado = false;
     this.errorConsulta = null;
+    this.desdeCache = false;
   }
 
 }

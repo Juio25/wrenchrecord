@@ -6,13 +6,15 @@ import { IonicModule } from '@ionic/angular/lazy';
 
 import { LoginPage } from './login.page';
 import { LoginPageRoutingModule } from './login-routing.module';
+import { OfflineBannerComponent } from '../shared/offline-banner/offline-banner.component';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    LoginPageRoutingModule
+    LoginPageRoutingModule,
+    OfflineBannerComponent   // standalone component – imported directly
   ],
 
   declarations: [
@@ -20,3 +22,5 @@ import { LoginPageRoutingModule } from './login-routing.module';
   ]
 })
 export class LoginPageModule {}
+
+

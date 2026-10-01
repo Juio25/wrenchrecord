@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {
   IonicModule,
   IonicRouteStrategy
-} from '@ionic/angular/lazy';;
+} from '@ionic/angular/lazy';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule
   ],

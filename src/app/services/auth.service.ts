@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap, catchError } from 'rxjs';
+import { ConfigService } from './config.service';
+import { NetworkService } from './network.service';
+import { ErrorHandlerService } from './error-handler.service';
 
 export interface RegistroUsuario {
   nombre: string;
@@ -40,25 +43,44 @@ const CLAVE_SESION = 'autolog_usuario';
 })
 export class AuthService {
 
-  // La API vive dentro de htdocs de XAMPP, en local.
-  // Ajusta esta URL según dónde estés corriendo la app:
-  //   - Navegador / "ionic serve"      -> http://localhost/wrenchrecord-api
-  //   - Emulador de Android            -> http://10.0.2.2/wrenchrecord-api
-  //   - Dispositivo físico (misma red) -> http://<IP-de-tu-PC-en-la-red>/wrenchrecord-api
-  private baseUrl = 'http://127.0.0.1/wrenchrecord-api';
+  // La URL base ya no está fija: se toma de ConfigService, que lee la IP
+  // que el usuario capturó en el login (guardada en persistencia).
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService,
+    private network: NetworkService,
+    private errorHandler: ErrorHandlerService
+  ) {}
 
-  constructor(private http: HttpClient) {}
+  private get baseUrl(): string {
+    return this.config.apiUrl;
+  }
 
   registrar(datos: RegistroUsuario): Observable<RespuestaApi> {
-    return this.http.post<RespuestaApi>(`${this.baseUrl}/usuarios/registrar.php`, datos);
+    if (!this.network.estaOnline) {
+      return of({ exito: false, mensaje: 'Sin conexión. No se puede crear la cuenta ahora.' });
+    }
+    return this.http.post<RespuestaApi>(`${this.baseUrl}/usuarios/registrar.php`, datos).pipe(
+      catchError(error => {
+        const info = this.errorHandler.interpretar(error);
+        return of({ exito: false, mensaje: info.mensaje });
+      })
+    );
   }
 
   login(datos: LoginUsuario): Observable<RespuestaLogin> {
+    if (!this.network.estaOnline) {
+      return of({ exito: false, mensaje: 'Sin conexión. Verifica tu red e inténtalo de nuevo.' });
+    }
     return this.http.post<RespuestaLogin>(`${this.baseUrl}/usuarios/login.php`, datos).pipe(
       tap((respuesta) => {
         if (respuesta.exito && respuesta.usuario) {
           this.guardarSesion(respuesta.usuario);
         }
+      }),
+      catchError(error => {
+        const info = this.errorHandler.interpretar(error);
+        return of({ exito: false, mensaje: info.mensaje });
       })
     );
   }

@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { IonicModule } from '@ionic/angular/lazy';
 
 import { ConsultaPage } from './tab2.page';
 import { Tab2PageRoutingModule } from './tab2-routing.module';
+import { OfflineBannerComponent } from '../shared/offline-banner/offline-banner.component';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    HttpClientModule,
-    Tab2PageRoutingModule
+    Tab2PageRoutingModule,
+    OfflineBannerComponent   // standalone component – imported directly
   ],
 
   declarations: [
@@ -22,3 +22,5 @@ import { Tab2PageRoutingModule } from './tab2-routing.module';
   ]
 })
 export class Tab2PageModule {}
+
+

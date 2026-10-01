@@ -1,5 +1,8 @@
 <ion-content [fullscreen]="true" class="login-content">
 
+  <!-- Offline banner – shown automatically when device has no connectivity -->
+  <app-offline-banner></app-offline-banner>
+
   <div class="login-container">
 
     <!-- Encabezado -->
@@ -30,6 +33,36 @@
       <span [class.active]="isRegister">
         Registrarse
       </span>
+
+    </div>
+
+    <!-- IP del origen de datos (API en Apache :80, MySQL :3306) -->
+    <div class="server-config">
+
+      <div class="form-group">
+
+        <input
+          type="text"
+          class="form-style"
+          placeholder="IP del servidor (ej. 192.168.1.50)"
+          name="servidorHost"
+          inputmode="decimal"
+          autocomplete="off"
+          autocapitalize="off"
+          [(ngModel)]="servidorHost"
+          (change)="onServidorChange()"
+        >
+
+        <ion-icon
+          name="server-outline"
+          class="input-icon">
+        </ion-icon>
+
+      </div>
+
+      <p class="server-hint">
+        API: puerto {{ puertoApi }} (XAMPP) · MySQL: puerto {{ puertoBd }}
+      </p>
 
     </div>
 
