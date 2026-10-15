@@ -169,6 +169,31 @@
             Inactivo
           </ion-badge>
 
+          <ion-buttons slot="end" class="result-actions">
+
+            <ion-button
+              fill="clear"
+              size="small"
+              class="btn-editar"
+              aria-label="Editar usuario"
+              (click)="onEditar(usuario)"
+            >
+              <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+            </ion-button>
+
+            <ion-button
+              *ngIf="usuario.activo !== 0"
+              fill="clear"
+              size="small"
+              class="btn-eliminar"
+              aria-label="Eliminar usuario"
+              (click)="onEliminar(usuario)"
+            >
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+
+          </ion-buttons>
+
         </ion-item>
 
       </ion-list>

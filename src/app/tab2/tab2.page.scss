@@ -1,10 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* =========================================================
-CONTENEDOR PRINCIPAL
-(mismos tokens de color que tab1 / login: fondo #1f2029,
-tarjetas #2a2b38, acento #ffeba7, texto #c4c3ca / #9d9ca5)
-========================================================= */
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
 
 .consulta-content {
   --background: #1f2029;
@@ -15,18 +13,16 @@ tarjetas #2a2b38, acento #ffeba7, texto #c4c3ca / #9d9ca5)
 .consulta-container {
   min-height: 100%;
   width: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   padding: 35px 20px 40px;
   box-sizing: border-box;
 }
 
 /* =========================================================
-ENCABEZADO
-========================================================= */
+   ENCABEZADO
+   ========================================================= */
 
 .header-section {
   text-align: center;
@@ -37,104 +33,76 @@ ENCABEZADO
 
 .header-section h1 {
   margin: 0;
-
   font-size: 26px;
   font-weight: 700;
-
   color: #ffffff;
 }
 
 .header-section p {
   margin: 6px 0 0;
-
   font-size: 13px;
   font-weight: 400;
-
   color: #9d9ca5;
 }
 
 /* =========================================================
-TARJETAS (formulario y resultados)
-========================================================= */
+   TARJETAS
+   ========================================================= */
 
 .form-card,
 .results-card {
   width: 100%;
   max-width: 420px;
-
   border-radius: 18px;
-
   background-color: #2a2b38;
-
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.30);
-
   padding: 28px 24px;
   box-sizing: border-box;
-
   margin-bottom: 24px;
 }
 
 .form-card h2,
 .results-card h2 {
   margin: 0 0 8px;
-
   text-align: center;
-
   color: #ffffff;
-
   font-size: 20px;
   font-weight: 600;
 }
 
 .form-description {
   margin: 0 auto 22px;
-
   max-width: 320px;
-
   text-align: center;
-
   color: #9d9ca5;
-
   font-size: 12px;
   line-height: 1.6;
 }
 
 /* =========================================================
-INPUTS
-========================================================= */
+   INPUTS
+   ========================================================= */
 
 .form-group {
   position: relative;
-
   width: 100%;
-
   margin-bottom: 14px;
 }
 
 .form-style {
   width: 100%;
   height: 50px;
-
   box-sizing: border-box;
-
   padding: 0 18px 0 52px;
-
   border: none;
   border-radius: 8px;
-
   outline: none;
-
   color: #ffffff;
-
   background-color: #1f2029;
-
   font-family: 'Poppins', sans-serif;
-
   font-size: 13px;
   font-weight: 400;
-
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.20);
-
   transition: all 200ms ease;
 }
 
@@ -146,103 +114,73 @@ INPUTS
 
 .form-style::placeholder {
   color: #777782;
-
   opacity: 1;
 }
 
 /* =========================================================
-ICONOS DE LOS CAMPOS
-========================================================= */
+   ICONOS
+   ========================================================= */
 
 .input-icon {
   position: absolute;
-
   top: 50%;
   left: 17px;
-
   transform: translateY(-50%);
-
   width: 21px;
   height: 21px;
-
   color: #ffeba7;
-
   z-index: 2;
 }
 
 /* =========================================================
-MENSAJE DE ERROR DE LA CONSULTA
-========================================================= */
+   ERROR
+   ========================================================= */
 
 .error-text {
   margin: -4px 0 14px;
-
   padding: 10px 14px;
-
   border-radius: 8px;
-
   background: rgba(235, 68, 90, 0.12);
-
   color: #eb445a;
-
   font-size: 12px;
   line-height: 1.5;
-
   text-align: center;
 }
 
 /* =========================================================
-BOTÓN CONSULTAR
-========================================================= */
+   BOTÓN CONSULTAR
+   ========================================================= */
 
 .submit-button {
   margin-top: 12px;
-
   --background: #ffeba7;
   --background-hover: #ffeba7;
   --background-activated: #102770;
-
   --color: #102770;
-
   --border-radius: 8px;
-
   --box-shadow: 0 8px 20px rgba(255, 235, 167, 0.15);
-
   font-family: 'Poppins', sans-serif;
-
   font-size: 13px;
   font-weight: 600;
-
   text-transform: uppercase;
-
   letter-spacing: 0.7px;
 }
 
 /* =========================================================
-LIMPIAR FILTROS
-========================================================= */
+   LIMPIAR FILTROS
+   ========================================================= */
 
 .clear-filters {
   display: block;
-
   width: 100%;
-
   margin-top: 14px;
-
   padding: 0;
-
   border: none;
-
   background: transparent;
-
   color: #9d9ca5;
-
   font-family: 'Poppins', sans-serif;
-
   font-size: 12px;
-
   cursor: pointer;
-
   transition: color 200ms ease;
 }
 
@@ -251,58 +189,46 @@ LIMPIAR FILTROS
 }
 
 /* =========================================================
-RESULTADOS: ESTADO VACÍO
-========================================================= */
+   ESTADO VACÍO
+   ========================================================= */
 
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   text-align: center;
-
   padding: 20px 10px 6px;
 }
 
 .empty-state ion-icon {
   font-size: 42px;
   color: #3b3c48;
-
   margin-bottom: 12px;
 }
 
 .empty-state p {
   margin: 0;
-
   max-width: 280px;
-
   color: #9d9ca5;
-
   font-size: 12px;
   line-height: 1.6;
 }
 
 /* =========================================================
-RESULTADOS: LISTA DE USUARIOS
-(se llenará al conectar la API / BD)
-========================================================= */
+   LISTA DE RESULTADOS
+   ========================================================= */
 
 .results-list {
   background: transparent;
-
   --ion-background-color: transparent;
 }
 
 .result-item {
   --background: #1f2029;
   --color: #ffffff;
-
   --border-color: #3b3c48;
-
   border-radius: 10px;
-
   margin-bottom: 10px;
-
   --padding-start: 12px;
   --inner-padding-end: 12px;
 }
@@ -314,54 +240,21 @@ RESULTADOS: LISTA DE USUARIOS
 
 .result-item h3 {
   margin: 0 0 2px;
-
   font-size: 14px;
   font-weight: 600;
-
   color: #ffffff;
 }
 
 .result-item p {
   margin: 0;
-
   font-size: 12px;
-
   color: #9d9ca5;
 }
 
 /* =========================================================
-RESPONSIVE
-========================================================= */
+   AVISO DE CACHÉ OFFLINE
+   ========================================================= */
 
-@media (max-width: 380px) {
-
-  .consulta-container {
-    padding: 25px 15px 35px;
-  }
-
-  .header-section h1 {
-    font-size: 22px;
-  }
-
-  .form-card,
-  .results-card {
-    padding: 22px 18px;
-  }
-}
-
-@media (min-width: 600px) {
-
-  .consulta-container {
-    padding: 40px;
-  }
-
-  .form-card,
-  .results-card {
-    max-width: 460px;
-  }
-}
-
-/* ── Offline / cache notice ──────────────────────────── */
 .cache-notice {
   display: flex;
   align-items: center;
@@ -379,3 +272,116 @@ RESPONSIVE
   }
 }
 
+/* =========================================================
+   RESPONSIVE  —  Mobile-first
+   xs  < 360px       Móvil muy pequeño
+   sm  360–599px     Móvil estándar (base)
+   md  600–767px     Móvil grande / phablet
+   lg  768–1023px    Tablet
+   xl  1024–1279px   Laptop
+   xxl ≥ 1280px      Desktop grande
+   ========================================================= */
+
+/* xs — Móvil muy pequeño (< 360 px) */
+@media (max-width: 359px) {
+  .consulta-container {
+    padding: 20px 12px 30px;
+  }
+
+  .header-section h1 { font-size: 21px; }
+
+  .form-card,
+  .results-card {
+    padding: 18px 14px;
+  }
+}
+
+/* md — Móvil grande / phablet (≥ 600 px) */
+@media (min-width: 600px) {
+  .consulta-container  { padding: 40px 32px; }
+  .header-section h1   { font-size: 28px; }
+  .header-section      { max-width: 500px; }
+
+  .form-card,
+  .results-card {
+    max-width: 500px;
+    padding: 32px 28px;
+  }
+
+  .form-style  { height: 52px; }
+}
+
+/* lg — Tablet (≥ 768 px) */
+@media (min-width: 768px) {
+  .consulta-container  { padding: 48px 40px; }
+  .header-section h1   { font-size: 30px; }
+  .header-section      { max-width: 620px; }
+
+  .form-card,
+  .results-card {
+    max-width: 620px;
+    padding: 36px 32px;
+  }
+
+  .form-style  { height: 54px; font-size: 14px; }
+  .submit-button { font-size: 14px; }
+}
+
+/* xl — Laptop (≥ 1024 px) */
+@media (min-width: 1024px) {
+  .consulta-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 80px;
+    align-items: stretch;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .header-section {
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+    margin-bottom: 8px;
+  }
+
+  .header-section h1 { font-size: 32px; }
+
+  .form-card {
+    flex: 1;
+    max-width: 440px;
+    margin-bottom: 0;
+  }
+
+  .results-card {
+    flex: 2;
+    max-width: 620px;
+    margin-bottom: 0;
+  }
+
+  .form-style  { height: 56px; font-size: 14px; }
+}
+
+/* xxl — Desktop grande (≥ 1280 px) */
+@media (min-width: 1280px) {
+  .consulta-container { padding: 64px 120px; gap: 32px; }
+  .header-section h1  { font-size: 36px; }
+
+  .form-card    { max-width: 480px; }
+  .results-card { max-width: 700px; }
+}
+
+
+/* =========================================================
+   ACCIONES POR USUARIO (editar / eliminar)
+   ========================================================= */
+
+.result-actions {
+  margin-left: 4px;
+}
+
+.btn-editar   { --color: #ffeba7; }
+.btn-eliminar { --color: #eb445a; }

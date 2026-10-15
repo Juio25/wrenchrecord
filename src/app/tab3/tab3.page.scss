@@ -1,11 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* =========================================================
-CONTENEDOR PRINCIPAL
-(mismos tokens de color que tab1 / tab2: fondo #1f2029,
-tarjetas #2a2b38, acento #ffeba7, azul #102770,
-texto #c4c3ca / #9d9ca5, divisores #3b3c48)
-========================================================= */
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
 
 .dashboard-content {
   --background: #1f2029;
@@ -17,29 +14,25 @@ texto #c4c3ca / #9d9ca5, divisores #3b3c48)
   width: 100%;
   max-width: 460px;
   margin: 0 auto;
-
   padding: 30px 20px 100px;
   box-sizing: border-box;
 }
 
 /* =========================================================
-ENCABEZADO
-========================================================= */
+   ENCABEZADO
+   ========================================================= */
 
 .dashboard-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 26px;
 }
 
 .greeting {
   margin: 0;
-
   font-size: 12px;
   font-weight: 400;
-
   color: #9d9ca5;
 }
 
@@ -49,12 +42,9 @@ ENCABEZADO
 
 .dashboard-header h1 {
   margin: 4px 0 0;
-
   font-size: 24px;
   font-weight: 700;
-
   color: #ffffff;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -62,7 +52,6 @@ ENCABEZADO
 
 .header-actions {
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   gap: 10px;
@@ -70,25 +59,17 @@ ENCABEZADO
 
 .icon-button {
   position: relative;
-
   width: 42px;
   height: 42px;
-
   border-radius: 50%;
-
   border: 1px solid #3b3c48;
   background: transparent;
-
   color: #ffffff;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 20px;
-
   cursor: pointer;
-
   transition: all 200ms ease;
 }
 
@@ -100,54 +81,42 @@ ENCABEZADO
 
 .badge-dot {
   position: absolute;
-
   top: 8px;
   right: 9px;
-
   width: 8px;
   height: 8px;
-
   border-radius: 50%;
-
   background-color: #eb445a;
-
   border: 2px solid #1f2029;
 }
 
 /* =========================================================
-ENCABEZADOS DE SECCIÓN
-========================================================= */
+   ENCABEZADOS DE SECCIÓN
+   ========================================================= */
 
 .section-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 14px;
 }
 
 .section-title-row h2,
 .vehicles-section > .section-title-row h2 {
   margin: 0;
-
   font-size: 16px;
   font-weight: 600;
-
   color: #ffffff;
 }
 
 .text-link {
   border: none;
   background: transparent;
-
   color: #ffeba7;
-
   font-family: 'Poppins', sans-serif;
   font-size: 12px;
   font-weight: 600;
-
   cursor: pointer;
-
   transition: opacity 200ms ease;
 }
 
@@ -156,8 +125,8 @@ ENCABEZADOS DE SECCIÓN
 }
 
 /* =========================================================
-MIS VEHÍCULOS (scroll horizontal)
-========================================================= */
+   MIS VEHÍCULOS
+   ========================================================= */
 
 .vehicles-section {
   margin-bottom: 24px;
@@ -166,11 +135,8 @@ MIS VEHÍCULOS (scroll horizontal)
 .vehicles-scroll {
   display: flex;
   gap: 12px;
-
   overflow-x: auto;
-
   padding-bottom: 4px;
-
   scrollbar-width: none;
 }
 
@@ -180,22 +146,14 @@ MIS VEHÍCULOS (scroll horizontal)
 
 .vehicle-card {
   flex: 0 0 auto;
-
   width: 140px;
-
   border-radius: 16px;
-
   background-color: #2a2b38;
-
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-
   padding: 16px;
   box-sizing: border-box;
-
   text-align: left;
-
   cursor: pointer;
-
   transition: transform 200ms ease;
 }
 
@@ -206,30 +164,21 @@ MIS VEHÍCULOS (scroll horizontal)
 .vehicle-icon {
   width: 38px;
   height: 38px;
-
   border-radius: 10px;
-
   background-color: rgba(255, 235, 167, 0.12);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #ffeba7;
-
   font-size: 20px;
-
   margin-bottom: 12px;
 }
 
 .vehicle-card h3 {
   margin: 0 0 2px;
-
   font-size: 13px;
   font-weight: 600;
-
   color: #ffffff;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -237,11 +186,8 @@ MIS VEHÍCULOS (scroll horizontal)
 
 .vehicle-card p {
   margin: 0 0 10px;
-
   font-size: 11px;
-
   color: #9d9ca5;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -251,9 +197,7 @@ MIS VEHÍCULOS (scroll horizontal)
   display: flex;
   align-items: center;
   gap: 4px;
-
   font-size: 11px;
-
   color: #777782;
 }
 
@@ -267,12 +211,9 @@ MIS VEHÍCULOS (scroll horizontal)
   align-items: center;
   justify-content: center;
   gap: 8px;
-
   border: 1.5px dashed #3b3c48;
   background: transparent;
-
   color: #9d9ca5;
-
   font-family: 'Poppins', sans-serif;
   font-size: 11px;
   font-weight: 500;
@@ -284,69 +225,54 @@ MIS VEHÍCULOS (scroll horizontal)
 }
 
 /* =========================================================
-TARJETAS DE INFORMACIÓN
-(recordatorios / historial — mismo estilo que
-.form-card / .results-card de tab2)
-========================================================= */
+   TARJETAS DE INFORMACIÓN
+   ========================================================= */
 
 .info-card {
   width: 100%;
-
   border-radius: 18px;
-
   background-color: #2a2b38;
-
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.30);
-
   padding: 20px;
   box-sizing: border-box;
-
   margin-bottom: 20px;
 }
 
 /* =========================================================
-ESTADO VACÍO (reutilizado de tab2)
-========================================================= */
+   ESTADO VACÍO
+   ========================================================= */
 
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   text-align: center;
-
   padding: 16px 10px 6px;
 }
 
 .empty-state ion-icon {
   font-size: 38px;
   color: #3b3c48;
-
   margin-bottom: 10px;
 }
 
 .empty-state p {
   margin: 0;
-
   max-width: 260px;
-
   color: #9d9ca5;
-
   font-size: 12px;
   line-height: 1.6;
 }
 
 /* =========================================================
-RECORDATORIOS DE MANTENIMIENTO
-========================================================= */
+   RECORDATORIOS
+   ========================================================= */
 
 .reminder-item {
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 12px 0;
-
   border-bottom: 1px solid #3b3c48;
 }
 
@@ -357,33 +283,18 @@ RECORDATORIOS DE MANTENIMIENTO
 
 .reminder-icon {
   flex-shrink: 0;
-
   width: 38px;
   height: 38px;
-
   border-radius: 10px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 18px;
 }
 
-.reminder-icon.ok {
-  background: rgba(45, 211, 111, 0.15);
-  color: #2dd36f;
-}
-
-.reminder-icon.proximo {
-  background: rgba(255, 196, 9, 0.15);
-  color: #ffc409;
-}
-
-.reminder-icon.vencido {
-  background: rgba(235, 68, 90, 0.15);
-  color: #eb445a;
-}
+.reminder-icon.ok      { background: rgba(45, 211, 111, 0.15); color: #2dd36f; }
+.reminder-icon.proximo { background: rgba(255, 196, 9, 0.15);  color: #ffc409; }
+.reminder-icon.vencido { background: rgba(235, 68, 90, 0.15);  color: #eb445a; }
 
 .reminder-info {
   flex: 1;
@@ -392,20 +303,15 @@ RECORDATORIOS DE MANTENIMIENTO
 
 .reminder-info h3 {
   margin: 0 0 2px;
-
   font-size: 13px;
   font-weight: 600;
-
   color: #ffffff;
 }
 
 .reminder-info p {
   margin: 0 0 8px;
-
   font-size: 11px;
-
   color: #9d9ca5;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -418,24 +324,20 @@ RECORDATORIOS DE MANTENIMIENTO
 
 .reminder-item ion-badge {
   flex-shrink: 0;
-
   font-size: 10px;
   font-weight: 600;
-
   text-transform: uppercase;
 }
 
 /* =========================================================
-HISTORIAL RECIENTE
-========================================================= */
+   HISTORIAL
+   ========================================================= */
 
 .history-item {
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 12px 0;
-
   border-bottom: 1px solid #3b3c48;
 }
 
@@ -446,43 +348,30 @@ HISTORIAL RECIENTE
 
 .history-thumb {
   position: relative;
-
   flex-shrink: 0;
-
   width: 42px;
   height: 42px;
-
   border-radius: 10px;
-
   background-color: #1f2029;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #ffeba7;
-
   font-size: 20px;
 }
 
 .photo-count {
   position: absolute;
-
   bottom: -4px;
   right: -4px;
-
   min-width: 16px;
   height: 16px;
   padding: 0 4px;
-
   border-radius: 8px;
-
   background-color: #ffeba7;
   color: #102770;
-
   font-size: 9px;
   font-weight: 700;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -495,12 +384,9 @@ HISTORIAL RECIENTE
 
 .history-details h3 {
   margin: 0 0 2px;
-
   font-size: 13px;
   font-weight: 600;
-
   color: #ffffff;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -508,52 +394,113 @@ HISTORIAL RECIENTE
 
 .history-details p {
   margin: 0;
-
   font-size: 11px;
-
   color: #9d9ca5;
 }
 
 .history-date {
   flex-shrink: 0;
-
   font-size: 11px;
-
   color: #777782;
 }
 
 /* =========================================================
-BOTÓN FLOTANTE (nuevo servicio)
-========================================================= */
+   BOTÓN FLOTANTE
+   ========================================================= */
 
 ion-fab-button {
   --background: #ffeba7;
   --background-hover: #ffeba7;
   --background-activated: #102770;
-
   --color: #102770;
-
   --box-shadow: 0 8px 20px rgba(255, 235, 167, 0.25);
 }
 
 /* =========================================================
-RESPONSIVE
-========================================================= */
+   RESPONSIVE  —  Mobile-first
+   xs  < 360px       Móvil muy pequeño
+   sm  360–599px     Móvil estándar (base)
+   md  600–767px     Móvil grande / phablet
+   lg  768–1023px    Tablet
+   xl  1024–1279px   Laptop
+   xxl ≥ 1280px      Desktop grande
+   ========================================================= */
 
-@media (max-width: 360px) {
-
-  .dashboard-container {
-    padding: 24px 16px 90px;
-  }
-
-  .vehicle-card {
-    width: 128px;
-  }
+/* xs — Móvil muy pequeño (< 360 px) */
+@media (max-width: 359px) {
+  .dashboard-container { padding: 20px 14px 80px; }
+  .vehicle-card        { width: 124px; }
+  .dashboard-header h1 { font-size: 20px; }
 }
 
+/* md — Móvil grande / phablet (≥ 600 px) */
 @media (min-width: 600px) {
+  .dashboard-container { max-width: 560px; padding: 36px 32px 100px; }
+  .vehicle-card        { width: 155px; }
+  .dashboard-header h1 { font-size: 26px; }
+  .section-title-row h2 { font-size: 17px; }
+}
 
+/* lg — Tablet (≥ 768 px) */
+@media (min-width: 768px) {
+  .dashboard-container { max-width: 700px; padding: 44px 40px 100px; }
+  .vehicle-card        { width: 168px; padding: 20px; }
+  .dashboard-header h1 { font-size: 28px; }
+  .section-title-row h2 { font-size: 18px; }
+  .icon-button         { width: 46px; height: 46px; }
+  .info-card           { padding: 24px; }
+}
+
+/* xl — Laptop (≥ 1024 px) */
+@media (min-width: 1024px) {
   .dashboard-container {
-    max-width: 500px;
+    max-width: 1100px;
+    padding: 52px 80px 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    column-gap: 40px;
   }
+
+  /* El encabezado ocupa toda la fila */
+  .dashboard-header    { grid-column: 1 / -1; margin-bottom: 32px; }
+
+  /* Los vehículos ocupan toda la fila */
+  .vehicles-section    { grid-column: 1 / -1; }
+
+  /* Recordatorios e historial en columnas paralelas */
+  .info-card           { margin-bottom: 0; padding: 28px; }
+
+  .dashboard-header h1 { font-size: 36px; }
+  .greeting            { font-size: 14px; }
+  .vehicle-card        { width: 185px; padding: 20px; }
+  .vehicle-card h3     { font-size: 15px; }
+  .vehicle-card p      { font-size: 12px; }
+  .vehicle-icon        { width: 44px; height: 44px; font-size: 22px; }
+  .section-title-row h2 { font-size: 20px; }
+  .text-link           { font-size: 13px; }
+  .icon-button         { width: 48px; height: 48px; font-size: 22px; }
+
+  /* Items de recordatorio e historial más grandes */
+  .reminder-icon       { width: 44px; height: 44px; font-size: 20px; }
+  .reminder-info h3    { font-size: 15px; }
+  .reminder-info p     { font-size: 12px; }
+
+  .history-thumb       { width: 48px; height: 48px; font-size: 22px; }
+  .history-details h3  { font-size: 15px; }
+  .history-details p   { font-size: 12px; }
+  .history-date        { font-size: 12px; }
+}
+
+/* xxl — Desktop grande (≥ 1280 px) */
+@media (min-width: 1280px) {
+  .dashboard-container { padding: 60px 120px 100px; column-gap: 48px; }
+  .dashboard-header h1 { font-size: 42px; }
+  .greeting            { font-size: 15px; }
+  .vehicle-card        { width: 205px; }
+  .section-title-row h2 { font-size: 22px; }
+  .info-card           { padding: 32px; }
+
+  .reminder-info h3    { font-size: 16px; }
+  .history-details h3  { font-size: 16px; }
 }

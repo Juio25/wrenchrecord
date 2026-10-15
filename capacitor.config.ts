@@ -5,5 +5,8 @@ const config: CapacitorConfig = {
   appName: 'WrenchRecord',
   webDir: 'www'
 };
+server: {
+  androidScheme: 'http'
+}
 
 export default config;

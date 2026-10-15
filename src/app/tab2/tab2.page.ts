@@ -1,4 +1,5 @@
 import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular/lazy';
 import { UsuariosService, FiltrosConsulta, UsuarioResultado } from '../services/usuarios.service';
 
 @Component({
@@ -25,7 +26,10 @@ export class ConsultaPage {
   constructor(
     private usuariosService: UsuariosService,
     private ngZone: NgZone,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController
   ) {}
 
   onConsultar(): void {
@@ -89,6 +93,148 @@ export class ConsultaPage {
     this.seHaConsultado = false;
     this.errorConsulta = null;
     this.desdeCache = false;
+  }
+
+  // =========================================================
+  //  PUT  — Editar usuario (actualizar.php)
+  // =========================================================
+
+  async onEditar(usuario: UsuarioResultado): Promise<void> {
+    const alerta = await this.alertCtrl.create({
+      header: 'Editar usuario',
+      subHeader: `ID: ${usuario.id_usuario}`,
+      inputs: [
+        { name: 'nombre',   type: 'text',  value: usuario.nombre,   placeholder: 'Nombre' },
+        { name: 'apellido', type: 'text',  value: usuario.apellido, placeholder: 'Apellido' },
+        { name: 'correo',   type: 'email', value: usuario.correo,   placeholder: 'Correo electrónico' }
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Guardar',
+          handler: (datos) => {
+            const nombre   = (datos.nombre   || '').trim();
+            const apellido = (datos.apellido || '').trim();
+            const correo   = (datos.correo   || '').trim();
+
+            if (!nombre || !apellido || !correo) {
+              this.mostrarToast('Completa nombre, apellido y correo.', 'warning');
+              return false;                       // mantiene la alerta abierta
+            }
+            if (!correo.includes('@')) {
+              this.mostrarToast('Escribe un correo válido.', 'warning');
+              return false;
+            }
+
+            this.guardarCambios(usuario, { nombre, apellido, correo });
+            return true;
+          }
+        }
+      ]
+    });
+
+    await alerta.present();
+  }
+
+  private async guardarCambios(
+    usuario: UsuarioResultado,
+    cambios: { nombre: string; apellido: string; correo: string }
+  ): Promise<void> {
+
+    const loading = await this.loadingCtrl.create({
+      message: 'Guardando cambios...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    this.usuariosService.actualizar({
+      id_usuario: usuario.id_usuario,
+      ...cambios
+    }).subscribe({
+      next: async (resp) => {
+        await loading.dismiss();
+        this.ngZone.run(() => {
+          if (resp.exito) {
+            this.resultados = this.resultados.map(u =>
+              u.id_usuario === usuario.id_usuario ? { ...u, ...cambios } : u
+            );
+          }
+          this.cdr.detectChanges();
+        });
+        this.mostrarToast(resp.mensaje, resp.exito ? 'success' : 'danger');
+      },
+      error: async () => {
+        await loading.dismiss();
+        this.mostrarToast('No se pudo conectar con el servidor.', 'danger');
+      }
+    });
+  }
+
+  // =========================================================
+  //  DELETE — Eliminar usuario (eliminar.php, baja lógica)
+  // =========================================================
+
+  async onEliminar(usuario: UsuarioResultado): Promise<void> {
+    const alerta = await this.alertCtrl.create({
+      header: 'Eliminar usuario',
+      message: `¿Seguro que quieres eliminar a ${usuario.nombre} ${usuario.apellido}?`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Eliminar',
+          role: 'destructive',
+          handler: () => { this.confirmarEliminar(usuario); }
+        }
+      ]
+    });
+
+    await alerta.present();
+  }
+
+  private async confirmarEliminar(usuario: UsuarioResultado): Promise<void> {
+
+    const loading = await this.loadingCtrl.create({
+      message: 'Eliminando usuario...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    this.usuariosService.eliminar(usuario.id_usuario).subscribe({
+      next: async (resp) => {
+        await loading.dismiss();
+        this.ngZone.run(() => {
+          if (resp.exito) {
+            // El backend hace baja lógica (activo = 0): se refleja en la lista
+            this.resultados = this.resultados.map(u =>
+              u.id_usuario === usuario.id_usuario ? { ...u, activo: 0 } : u
+            );
+          }
+          this.cdr.detectChanges();
+        });
+        this.mostrarToast(resp.mensaje, resp.exito ? 'success' : 'danger');
+      },
+      error: async () => {
+        await loading.dismiss();
+        this.mostrarToast('No se pudo conectar con el servidor.', 'danger');
+      }
+    });
+  }
+
+  // =========================================================
+  //  Mensajes al usuario
+  // =========================================================
+
+  private async mostrarToast(
+    mensaje: string,
+    color: 'success' | 'danger' | 'warning'
+  ): Promise<void> {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      duration: 2800,
+      position: 'bottom',
+      color
+    });
+    await toast.present();
   }
 
 }
