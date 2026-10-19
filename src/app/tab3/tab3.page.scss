@@ -504,3 +504,10 @@ ion-fab-button {
   .reminder-info h3    { font-size: 16px; }
   .history-details h3  { font-size: 16px; }
 }
+
+.estado-dashboard {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  color: #9d9ca5; font-size: 13px; margin: 0 0 16px; text-align: center;
+}
+.estado-dashboard.error { color: #eb445a; }
+@media (min-width: 1024px) { .estado-dashboard { grid-column: 1 / -1; } }

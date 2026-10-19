@@ -1,34 +1,14 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ViewWillEnter } from '@ionic/angular';
 import { AuthService, UsuarioSesion } from '../services/auth.service';
-
-interface Vehiculo {
-  id: string;
-  nombre: string;
-  marca: string;
-  modelo: string;
-  kilometraje: number;
-  icono: string;
-}
-
-interface Recordatorio {
-  id: string;
-  titulo: string;
-  vehiculo: string;
-  detalle: string;
-  progreso: number; // 0 a 1, usado por ion-progress-bar
-  estado: 'ok' | 'proximo' | 'vencido';
-  estadoTexto: string;
-}
-
-interface ServicioHistorial {
-  id: string;
-  tipo: string;
-  vehiculo: string;
-  fecha: string;
-  fotos: number;
-}
+import {
+  DashboardService,
+  Vehiculo,
+  Recordatorio,
+  ServicioHistorial
+} from '../services/dashboard.service';
+import { GraficaGastosComponent } from '../shared/grafica-gastos/grafica-gastos.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,78 +18,28 @@ interface ServicioHistorial {
 })
 export class DashboardPage implements OnInit, ViewWillEnter {
 
+  /** Gráfica de gastos (si el HTML la incluye): se recarga al volver al Dashboard. */
+  @ViewChild(GraficaGastosComponent) grafica?: GraficaGastosComponent;
+
   usuario: UsuarioSesion | null = null;
 
   tieneNotificaciones: boolean = true;
 
-  vehiculos: Vehiculo[] = [
-    {
-      id: 'v1',
-      nombre: 'La Rossa',
-      marca: 'Honda',
-      modelo: 'CB190R',
-      kilometraje: 12450,
-      icono: 'bicycle-outline'
-    },
-    {
-      id: 'v2',
-      nombre: 'El Jetta',
-      marca: 'Volkswagen',
-      modelo: 'Jetta A4',
-      kilometraje: 98230,
-      icono: 'car-sport-outline'
-    }
-  ];
+  // Estado de la carga desde la API
+  cargando: boolean = false;
+  error: string | null = null;
+  desdeCache: boolean = false;
 
-  recordatorios: Recordatorio[] = [
-    {
-      id: 'r1',
-      titulo: 'Cambio de aceite',
-      vehiculo: 'El Jetta',
-      detalle: 'Faltan 200 km',
-      progreso: 0.9,
-      estado: 'proximo',
-      estadoTexto: 'Próximo'
-    },
-    {
-      id: 'r2',
-      titulo: 'Purga de frenos',
-      vehiculo: 'La Rossa',
-      detalle: 'Venció hace 3 días',
-      progreso: 1,
-      estado: 'vencido',
-      estadoTexto: 'Vencido'
-    },
-    {
-      id: 'r3',
-      titulo: 'Revisión de cableado',
-      vehiculo: 'La Rossa',
-      detalle: 'Programado en 30 días',
-      progreso: 0.3,
-      estado: 'ok',
-      estadoTexto: 'Al día'
-    }
-  ];
+  // Datos que llegan de la API (antes estaban escritos a mano)
+  vehiculos: Vehiculo[] = [];
+  recordatorios: Recordatorio[] = [];
+  historial: ServicioHistorial[] = [];
 
-  historial: ServicioHistorial[] = [
-    {
-      id: 'h1',
-      tipo: 'Limpieza de carburador',
-      vehiculo: 'La Rossa',
-      fecha: '02 sep',
-      fotos: 3
-    },
-    {
-      id: 'h2',
-      tipo: 'Cambio de balatas',
-      vehiculo: 'El Jetta',
-      fecha: '28 ago',
-      fotos: 0
-    }
-  ];
+  private yaEntro: boolean = false;
 
   constructor(
     private authService: AuthService,
+    private dashboardService: DashboardService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -120,6 +50,16 @@ export class DashboardPage implements OnInit, ViewWillEnter {
 
   ionViewWillEnter(): void {
     this.cargarSesion();
+
+    if (this.usuario) {
+      this.cargarDatos();
+    }
+
+    // La primera vez la gráfica carga sola; las siguientes hay que pedirle que se refresque
+    if (this.yaEntro) {
+      this.grafica?.recargar();
+    }
+    this.yaEntro = true;
   }
 
   private cargarSesion(): void {
@@ -136,9 +76,41 @@ export class DashboardPage implements OnInit, ViewWillEnter {
     this.cdr.detectChanges();
   }
 
+  /** GET /dashboard/resumen.php: vehículos, recordatorios e historial del usuario. */
+  private cargarDatos(): void {
+    if (!this.usuario) {
+      return;
+    }
+
+    this.cargando = true;
+    this.error = null;
+    this.cdr.detectChanges();
+
+    this.dashboardService.obtenerResumen(this.usuario.id_usuario).subscribe(respuesta => {
+      this.cargando = false;
+      this.desdeCache = !!respuesta.desdeCache;
+
+      if (respuesta.exito) {
+        this.vehiculos = respuesta.resumen.vehiculos;
+        this.recordatorios = respuesta.resumen.recordatorios;
+        this.historial = respuesta.resumen.historial;
+      } else {
+        this.error = respuesta.mensaje;
+        this.vehiculos = [];
+        this.recordatorios = [];
+        this.historial = [];
+      }
+
+      this.cdr.detectChanges();
+    });
+  }
+
   onCerrarSesion(): void {
     this.authService.cerrarSesion();
     this.usuario = null;
+    this.vehiculos = [];
+    this.recordatorios = [];
+    this.historial = [];
     this.router.navigateByUrl('/login');
   }
 

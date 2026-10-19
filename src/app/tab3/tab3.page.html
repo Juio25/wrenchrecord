@@ -22,6 +22,12 @@
 
       </div>
     </div>
+           <div class="estado-dashboard" *ngIf="cargando">
+         <ion-spinner name="crescent"></ion-spinner>
+         <span>Cargando tu información...</span>
+       </div>
+       <p class="estado-dashboard error" *ngIf="!cargando && error">{{ error }}</p>
+       <p class="estado-dashboard" *ngIf="!cargando && desdeCache">Sin conexión: mostrando datos guardados.</p>
 
     <!-- ==================== MIS VEHÍCULOS (scroll horizontal) ==================== -->
     <div class="vehicles-section">
@@ -68,7 +74,7 @@
         <button class="text-link" (click)="verTodosRecordatorios()">Ver todos</button>
       </div>
 
-      <div class="empty-state" *ngIf="recordatorios.length === 0">
+      <div class="empty-state" *ngIf="!cargando && recordatorios.length === 0">
         <ion-icon name="alarm-outline"></ion-icon>
         <p>No tienes recordatorios pendientes.</p>
       </div>
@@ -106,7 +112,7 @@
         <button class="text-link" (click)="verHistorialCompleto()">Ver todo</button>
       </div>
 
-      <div class="empty-state" *ngIf="historial.length === 0">
+      <div class="empty-state" *ngIf="!cargando && historial.length === 0">
         <ion-icon name="time-outline"></ion-icon>
         <p>Aún no registras servicios. ¡Agrega el primero!</p>
       </div>
@@ -135,7 +141,13 @@
     </div>
 
   </div>
-
+      <!-- ==================== GASTOS POR MES ==================== -->
+    <div class="info-card gastos-section">
+      <div class="section-title-row">
+        <h2>Gastos por mes</h2>
+      </div>
+      <app-grafica-gastos></app-grafica-gastos>
+    </div>
   <!-- Botón flotante para registrar un nuevo servicio -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="onNuevoServicio()">

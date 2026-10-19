@@ -1,0 +1,64 @@
+// =============================================================
+// WrenchRecord — Breakpoints & Responsive Mixins
+// =============================================================
+//
+// Breakpoint scale:
+//
+//   xs   < 360px    Móvil muy pequeño (Galaxy A, iPhone SE)
+//   sm   360–599px  Móvil estándar    (iPhone 14, Pixel 7)
+//   md   600–767px  Móvil grande / phablet (iPhone 14 Plus)
+//   lg   768–1023px Tablet            (iPad Mini, Galaxy Tab)
+//   xl   1024–1279px Laptop pequeña   (MacBook Air 13", Surface Go)
+//   xxl  ≥ 1280px   Desktop / laptop grande
+//
+// Uso:
+//   @include bp-down(xs)  { … }   → solo en pantallas < 360px
+//   @include bp-up(md)    { … }   → 600px en adelante
+//   @include bp-between(sm, lg) { … }
+// =============================================================
+
+// ----- Valores de corte (min-width) -----
+$bp-xs:  360px;
+$bp-sm:  600px;
+$bp-md:  768px;
+$bp-lg:  1024px;
+$bp-xl:  1280px;
+
+// ----- Anchos máximos de contenedor por página -----
+$container-sm:   420px;   // login, tab1, tab2 en móvil
+$container-md:   560px;   // login, tab2 en tablet
+$container-lg:   720px;   // tab2 / tab3 en laptop
+$container-xl:   900px;   // tab2 / tab3 en desktop
+$container-xxl: 1100px;   // máximo absoluto
+
+// ----- Mixins -----
+
+/// min-width breakpoint (mobile-first)
+@mixin bp-up($name) {
+  @if      $name == xs  { @media (min-width: $bp-xs)  { @content; } }
+  @else if $name == sm  { @media (min-width: $bp-sm)  { @content; } }
+  @else if $name == md  { @media (min-width: $bp-md)  { @content; } }
+  @else if $name == lg  { @media (min-width: $bp-lg)  { @content; } }
+  @else if $name == xl  { @media (min-width: $bp-xl)  { @content; } }
+  @else                  { @media (min-width: $name)   { @content; } }
+}
+
+/// max-width breakpoint
+@mixin bp-down($name) {
+  @if      $name == xs  { @media (max-width: #{$bp-xs - 1})  { @content; } }
+  @else if $name == sm  { @media (max-width: #{$bp-sm - 1})  { @content; } }
+  @else if $name == md  { @media (max-width: #{$bp-md - 1})  { @content; } }
+  @else if $name == lg  { @media (max-width: #{$bp-lg - 1})  { @content; } }
+  @else if $name == xl  { @media (max-width: #{$bp-xl - 1})  { @content; } }
+  @else                  { @media (max-width: $name)          { @content; } }
+}
+
+/// Range between two breakpoints
+@mixin bp-between($lower, $upper) {
+  @include bp-up($lower) {
+    @include bp-down($upper) {
+      @content;
+    }
+  }
+}
+
