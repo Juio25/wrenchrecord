@@ -1,7 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ViewWillEnter } from '@ionic/angular';
 import { AuthService, UsuarioSesion } from '../services/auth.service';
+import { NetworkService } from '../services/network.service';
 import {
   DashboardService,
   Vehiculo,
@@ -16,7 +18,7 @@ import { GraficaGastosComponent } from '../shared/grafica-gastos/grafica-gastos.
   styleUrls: ['./tab3.page.scss'],
   standalone: false
 })
-export class DashboardPage implements OnInit, ViewWillEnter {
+export class DashboardPage implements OnInit, OnDestroy, ViewWillEnter {
 
   /** Gráfica de gastos (si el HTML la incluye): se recarga al volver al Dashboard. */
   @ViewChild(GraficaGastosComponent) grafica?: GraficaGastosComponent;
@@ -36,16 +38,26 @@ export class DashboardPage implements OnInit, ViewWillEnter {
   historial: ServicioHistorial[] = [];
 
   private yaEntro: boolean = false;
+  private subReconexion?: Subscription;
 
   constructor(
     private authService: AuthService,
     private dashboardService: DashboardService,
+    private network: NetworkService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.cargarSesion();
+
+    // Recuperación de conexión: al volver el Internet se vuelve a consultar la API
+    // (la gráfica de gastos se refresca sola, ella también escucha la reconexión)
+    this.subReconexion = this.network.reconectado$.subscribe(() => this.cargarDatos());
+  }
+
+  ngOnDestroy(): void {
+    this.subReconexion?.unsubscribe();
   }
 
   ionViewWillEnter(): void {

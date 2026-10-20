@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { ConfigService } from './config.service';
+import { CacheService } from './cache.service';
 import { NetworkService } from './network.service';
 import { AuthService } from './auth.service';
 import { ErrorHandlerService } from './error-handler.service';
@@ -19,7 +20,10 @@ export interface RespuestaGastos {
   exito: boolean;
   mensaje: string;
   gastos: GastoMes[];
+  desdeCache?: boolean;   // true cuando vienen de la copia local
 }
+
+const TTL_CACHE_MS = 24 * 60 * 60 * 1000;   // 24 h: para ver la gráfica sin conexión
 
 // ==================== SERVICIO ====================
 
@@ -31,6 +35,7 @@ export class GastosService {
   constructor(
     private http: HttpClient,
     private config: ConfigService,
+    private cache: CacheService,
     private network: NetworkService,
     private auth: AuthService,
     private errorHandler: ErrorHandlerService
@@ -62,10 +67,16 @@ export class GastosService {
       });
     }
 
+    const clave = `gastos_${sesion.id_usuario}_${anio}`;
+
     if (!this.network.estaOnline) {
+      const guardado = this.cache.obtener<RespuestaGastos>(clave);
+      if (guardado) {
+        return of({ ...guardado, desdeCache: true });
+      }
       return of({
         exito: false,
-        mensaje: 'Sin conexión. No se pueden cargar los gastos ahora.',
+        mensaje: 'Sin conexión y sin datos guardados de este año.',
         gastos: []
       });
     }
@@ -77,7 +88,17 @@ export class GastosService {
     return this.http
       .get<RespuestaGastos>(`${this.baseUrl}/gastos/por_mes.php`, { params })
       .pipe(
-        catchError(error => {
+        tap(resp => {
+          if (resp.exito) {
+            this.cache.guardar(clave, resp, TTL_CACHE_MS);
+          }
+        }),
+        catchError((error): Observable<RespuestaGastos> => {
+          // Si la API falla, se muestra la última copia guardada (si existe)
+          const guardado = this.cache.obtener<RespuestaGastos>(clave);
+          if (guardado) {
+            return of({ ...guardado, desdeCache: true });
+          }
           const info = this.errorHandler.interpretar(error);
           return of({ exito: false, mensaje: info.mensaje, gastos: [] });
         })

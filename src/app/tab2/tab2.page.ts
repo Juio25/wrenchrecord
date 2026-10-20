@@ -1,6 +1,8 @@
-import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular/lazy';
 import { UsuariosService, FiltrosConsulta, UsuarioResultado } from '../services/usuarios.service';
+import { NetworkService } from '../services/network.service';
 
 @Component({
   selector: 'app-consulta',
@@ -8,7 +10,7 @@ import { UsuariosService, FiltrosConsulta, UsuarioResultado } from '../services/
   styleUrls: ['./tab2.page.scss'],
   standalone: false
 })
-export class ConsultaPage {
+export class ConsultaPage implements OnInit, OnDestroy {
 
   filtros: FiltrosConsulta = {
     nombre: '',
@@ -23,14 +25,48 @@ export class ConsultaPage {
   errorConsulta: string | null = null;
   desdeCache: boolean = false;   // true when results come from local cache
 
+  private ultimosFiltros: FiltrosConsulta | null = null;   // para re-consultar al reconectar
+  private subReconexion?: Subscription;
+
   constructor(
     private usuariosService: UsuariosService,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private network: NetworkService
   ) {}
+
+  ngOnInit(): void {
+    // Recuperación de conexión: al volver el Internet se repite la última consulta
+    this.subReconexion = this.network.reconectado$.subscribe(() => this.sincronizarAlReconectar());
+  }
+
+  ngOnDestroy(): void {
+    this.subReconexion?.unsubscribe();
+  }
+
+  /** Vuelve a pedir al servidor la última consulta y refresca la copia local. */
+  private sincronizarAlReconectar(): void {
+    if (!this.ultimosFiltros || this.cargando) {
+      return;
+    }
+
+    this.usuariosService.consultar(this.ultimosFiltros).subscribe(respuesta => {
+      this.ngZone.run(() => {
+        this.desdeCache = !!respuesta.desdeCahe;
+        if (respuesta.exito) {
+          this.resultados = respuesta.usuarios;
+          this.errorConsulta = null;
+          if (!this.desdeCache) {
+            this.mostrarToast('Datos sincronizados con el servidor.', 'success');
+          }
+        }
+        this.cdr.detectChanges();
+      });
+    });
+  }
 
   onConsultar(): void {
     if (this.cargando) {
@@ -47,6 +83,7 @@ export class ConsultaPage {
 
     this.cargando = true;
     this.errorConsulta = null;
+    this.ultimosFiltros = { ...this.filtros };
 
     this.usuariosService.consultar(this.filtros).subscribe({
       next: (respuesta) => {

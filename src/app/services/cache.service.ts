@@ -18,7 +18,7 @@ export interface EntradaCache<T> {
 export class CacheService {
 
   private readonly PREFIJO = 'wr_cache_';
-  private readonly TTL_DEFAULT_MS = 5 * 60 * 1000; // 5 min
+  private readonly TTL_DEFAULT_MS = 24 * 60 * 60 * 1000; // 24 hrs
 
   // ───────────────────────── write ─────────────────────────
 

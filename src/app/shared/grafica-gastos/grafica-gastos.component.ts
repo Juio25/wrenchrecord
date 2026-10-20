@@ -3,8 +3,10 @@ import {
   ChangeDetectorRef, NgZone, CUSTOM_ELEMENTS_SCHEMA
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
 import { GastosService, GastoMes } from '../../services/gastos.service';
+import { NetworkService } from '../../services/network.service';
 
 const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
                'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
@@ -72,9 +74,11 @@ export class GraficaGastosComponent implements OnInit, OnDestroy {
 
   private datos: GastoMes[] = [];
   private observador?: ResizeObserver;
+  private subReconexion?: Subscription;
 
   constructor(
     private gastosService: GastosService,
+    private network: NetworkService,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef
   ) {}
@@ -87,10 +91,14 @@ export class GraficaGastosComponent implements OnInit, OnDestroy {
       if (this.datos.length) { this.dibujar(); }
     });
     this.observador.observe(this.contenedor.nativeElement);
+
+    // Al volver el Internet se piden otra vez los gastos al servidor
+    this.subReconexion = this.network.reconectado$.subscribe(() => this.cargar());
   }
 
   ngOnDestroy(): void {
     this.observador?.disconnect();
+    this.subReconexion?.unsubscribe();
   }
 
   cambiarAnio(delta: number): void {
