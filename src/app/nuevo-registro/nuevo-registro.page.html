@@ -1,0 +1,176 @@
+<ion-content [fullscreen]="true">
+
+  <app-offline-banner></app-offline-banner>
+
+  <div class="nr-container">
+
+    <!-- ==================== ENCABEZADO ==================== -->
+    <header class="nr-header">
+      <button type="button" class="btn-volver" (click)="volver()" aria-label="Volver al Dashboard">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
+      <div>
+        <h1>Nuevo registro</h1>
+        <p>Guarda un mantenimiento o una modificación de tu vehículo</p>
+      </div>
+    </header>
+
+    <!-- ==================== TIPO ==================== -->
+    <div class="selector-tipo" role="tablist">
+      <button type="button" role="tab" [class.activo]="tipo === 'servicio'" (click)="cambiarTipo('servicio')">
+        Mantenimiento
+      </button>
+      <button type="button" role="tab" [class.activo]="tipo === 'modificacion'" (click)="cambiarTipo('modificacion')">
+        Modificación
+      </button>
+    </div>
+
+    <!-- ==================== DATOS GENERALES ==================== -->
+    <section class="tarjeta">
+      <h2>Datos generales</h2>
+
+      <div class="estado" *ngIf="cargandoVehiculos">
+        <ion-spinner name="crescent"></ion-spinner>
+        <span>Cargando tus vehículos...</span>
+      </div>
+
+      <p class="aviso" *ngIf="!cargandoVehiculos && vehiculos.length === 0">
+        Todavía no tienes vehículos registrados, así que no se puede guardar un registro.
+      </p>
+
+      <div class="campos">
+
+        <label class="campo ancho-completo">
+          <span>Vehículo</span>
+          <select [(ngModel)]="idVehiculo" [disabled]="vehiculos.length === 0">
+            <option [ngValue]="null" disabled>Selecciona un vehículo</option>
+            <option *ngFor="let v of vehiculos" [ngValue]="v.id">{{ v.nombre }} · {{ v.marca }} {{ v.modelo }}</option>
+          </select>
+        </label>
+
+        <label class="campo ancho-completo">
+          <span>{{ tipo === 'servicio' ? 'Servicio realizado' : 'Nombre de la modificación' }}</span>
+          <input type="text" maxlength="80" [(ngModel)]="nombre"
+                 [placeholder]="tipo === 'servicio' ? 'Ej. Cambio de aceite' : 'Ej. Escape deportivo'">
+        </label>
+
+        <label class="campo">
+          <span>{{ tipo === 'servicio' ? 'Fecha del servicio' : 'Fecha de inicio' }}</span>
+          <input type="date" [(ngModel)]="fecha">
+        </label>
+
+        <ng-container *ngIf="tipo === 'servicio'">
+          <label class="campo">
+            <span>Kilometraje</span>
+            <input type="number" inputmode="numeric" min="0" step="1" [(ngModel)]="kilometraje" placeholder="Ej. 12500">
+          </label>
+
+          <label class="campo ancho-completo">
+            <span>Realizado por</span>
+            <input type="text" maxlength="80" [(ngModel)]="realizadoPor" placeholder="Yo mismo, nombre del taller...">
+          </label>
+        </ng-container>
+
+        <ng-container *ngIf="tipo === 'modificacion'">
+          <label class="campo">
+            <span>Estado</span>
+            <select [(ngModel)]="estadoMod">
+              <option value="planeada">Planeada</option>
+              <option value="en_progreso">En progreso</option>
+              <option value="terminada">Terminada</option>
+            </select>
+          </label>
+
+          <label class="campo ancho-completo">
+            <span>Categoría</span>
+            <input type="text" maxlength="60" [(ngModel)]="categoria" placeholder="Motor, escape, suspensión...">
+          </label>
+        </ng-container>
+
+        <label class="campo">
+          <span>Mano de obra ($)</span>
+          <input type="number" inputmode="decimal" min="0" step="any" [(ngModel)]="manoObra" placeholder="Opcional">
+        </label>
+
+        <label class="campo ancho-completo">
+          <span>Notas</span>
+          <textarea rows="3" maxlength="2000" [(ngModel)]="notas" placeholder="Detalles que quieras recordar"></textarea>
+        </label>
+
+      </div>
+    </section>
+
+    <!-- ==================== PIEZAS ==================== -->
+    <section class="tarjeta">
+      <div class="titulo-fila">
+        <h2>Piezas usadas</h2>
+        <button type="button" class="btn-texto" (click)="agregarPieza()">+ Agregar pieza</button>
+      </div>
+
+      <p class="aviso suave" *ngIf="piezas.length === 0">
+        Agrega las piezas que compraste para llevar el gasto en la gráfica.
+      </p>
+
+      <div class="pieza" *ngFor="let p of piezas; let i = index; trackBy: trackPorIndice">
+        <label class="campo nombre-pieza">
+          <span>Pieza</span>
+          <input type="text" maxlength="100" [(ngModel)]="p.nombre" placeholder="Ej. Filtro de aceite">
+        </label>
+        <label class="campo">
+          <span>Cantidad</span>
+          <input type="number" inputmode="decimal" min="0" step="any" [(ngModel)]="p.cantidad">
+        </label>
+        <label class="campo">
+          <span>Costo c/u ($)</span>
+          <input type="number" inputmode="decimal" min="0" step="any" [(ngModel)]="p.costo">
+        </label>
+        <button type="button" class="btn-quitar" (click)="quitarPieza(i)" aria-label="Quitar pieza">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== FOTOS ==================== -->
+    <section class="tarjeta">
+      <div class="titulo-fila">
+        <h2>Fotos</h2>
+        <span class="contador">{{ fotos.length }} / {{ maxFotos }}</span>
+      </div>
+
+      <p class="aviso suave">
+        Las fotos se editan en la app y se quedan guardadas solo en este celular; no se suben al servidor.
+      </p>
+
+      <div class="fotos">
+        <div class="foto" *ngFor="let f of fotos; let i = index">
+          <img [src]="f.vista" alt="Foto del registro">
+          <button type="button" class="btn-quitar-foto" (click)="quitarFoto(i)" aria-label="Quitar foto">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+
+        <label class="foto agregar" *ngIf="fotos.length < maxFotos">
+          <ion-icon name="camera-outline"></ion-icon>
+          <span>Agregar foto</span>
+          <input type="file" accept="image/*" class="oculto" (change)="onArchivoSeleccionado($event)">
+        </label>
+      </div>
+    </section>
+
+    <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+
+  </div>
+
+  <!-- ==================== BARRA DE ACCIONES ==================== -->
+  <div class="acciones">
+    <div class="total">
+      <span>Total estimado</span>
+      <strong>{{ totalEstimado | currency:'MXN':'symbol-narrow':'1.0-2' }}</strong>
+    </div>
+    <button type="button" class="btn-guardar" [disabled]="guardando || vehiculos.length === 0" (click)="onGuardar()">
+      <ion-spinner *ngIf="guardando" name="crescent"></ion-spinner>
+      <span *ngIf="!guardando">Guardar</span>
+    </button>
+  </div>
+
+</ion-content>

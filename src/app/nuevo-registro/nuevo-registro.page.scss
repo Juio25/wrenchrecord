@@ -1,0 +1,301 @@
+/* =========================================================
+   NUEVO REGISTRO – formulario responsivo (celular -> tablet -> escritorio)
+   ========================================================= */
+
+ion-content {
+  --background: #1f2029;
+  color: #c4c3ca;
+}
+
+.nr-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px 16px 110px;
+}
+
+/* ---------- Encabezado ---------- */
+.nr-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: env(safe-area-inset-top, 0px);
+  margin-bottom: 16px;
+
+  h1 { margin: 0; font-size: 1.5rem; font-weight: 700; color: #ffffff; }
+  p  { margin: 2px 0 0; font-size: 0.8125rem; color: #9d9ca5; }
+}
+
+.btn-volver {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #3b3c48;
+  background: #2a2b38;
+  color: #ffffff;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ---------- Selector de tipo ---------- */
+.selector-tipo {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  margin-bottom: 16px;
+  background: #2a2b38;
+  border-radius: 12px;
+
+  button {
+    flex: 1;
+    padding: 10px 8px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #9d9ca5;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+
+    &.activo { background: #ffeba7; color: #102770; }
+  }
+}
+
+/* ---------- Tarjetas ---------- */
+.tarjeta {
+  background: #2a2b38;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+
+  h2 { margin: 0 0 12px; font-size: 1rem; font-weight: 600; color: #ffffff; }
+}
+
+.titulo-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+
+  h2 { margin: 0; }
+}
+
+.contador { font-size: 0.8125rem; color: #9d9ca5; }
+
+/* ---------- Campos ---------- */
+.campos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+
+  span { font-size: 0.75rem; color: #9d9ca5; }
+
+  input, select, textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    background: #1f2029;
+    color: #ffffff;
+    border: 1px solid #3b3c48;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    outline: none;
+    color-scheme: dark;
+
+    &:focus { border-color: #ffeba7; }
+    &::placeholder { color: #6c6b75; }
+    &:disabled { opacity: 0.5; }
+  }
+
+  textarea { resize: vertical; min-height: 72px; }
+}
+
+.ancho-completo { grid-column: 1 / -1; }
+
+/* ---------- Piezas ---------- */
+.pieza {
+  display: grid;
+  grid-template-columns: 1fr 1fr 44px;
+  gap: 8px;
+  align-items: end;
+  padding: 12px 0;
+  border-top: 1px solid #3b3c48;
+
+  .nombre-pieza { grid-column: 1 / -1; }
+}
+
+.btn-texto {
+  background: transparent;
+  border: 0;
+  color: #ffeba7;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.btn-quitar {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid #3b3c48;
+  background: transparent;
+  color: #eb445a;
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ---------- Fotos ---------- */
+.fotos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.foto {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1f2029;
+
+  img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  &.agregar {
+    border: 1px dashed #6c6b75;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #ffeba7;
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    ion-icon { font-size: 1.5rem; }
+  }
+}
+
+.oculto { display: none; }
+
+.btn-quitar-foto {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ---------- Avisos ---------- */
+.estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: #9d9ca5;
+  margin-bottom: 8px;
+}
+
+.aviso {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 196, 9, 0.12);
+  color: #ffc409;
+  font-size: 0.8125rem;
+
+  &.suave { background: transparent; padding: 0; color: #9d9ca5; }
+}
+
+.error {
+  margin: 0 0 16px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(235, 68, 90, 0.14);
+  color: #eb445a;
+  font-size: 0.875rem;
+}
+
+/* ---------- Barra inferior ---------- */
+.acciones {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, #1f2029 70%, rgba(31, 32, 41, 0));
+
+  .total {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75rem;
+    color: #9d9ca5;
+
+    strong { font-size: 1.125rem; color: #ffffff; }
+  }
+}
+
+.btn-guardar {
+  min-width: 140px;
+  height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 12px;
+  background: #ffeba7;
+  color: #102770;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(255, 235, 167, 0.18);
+
+  &:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  ion-spinner { width: 22px; height: 22px; color: #102770; }
+}
+
+/* ---------- Tablet y escritorio ---------- */
+@media (min-width: 600px) {
+  .campos { grid-template-columns: 1fr 1fr; }
+  .pieza  { grid-template-columns: 2fr 1fr 1fr 44px; }
+  .pieza .nombre-pieza { grid-column: auto; }
+}
+
+@media (min-width: 1024px) {
+  .nr-container { padding: 32px 24px 120px; }
+  .nr-header h1 { font-size: 1.75rem; }
+}

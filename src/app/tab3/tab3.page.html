@@ -28,6 +28,7 @@
        </div>
        <p class="estado-dashboard error" *ngIf="!cargando && error">{{ error }}</p>
        <p class="estado-dashboard" *ngIf="!cargando && desdeCache">Sin conexión: mostrando datos guardados.</p>
+       <p class="estado-dashboard" *ngIf="pendientes > 0">{{ pendientes }} registro(s) pendiente(s) de sincronizar</p>
 
     <!-- ==================== MIS VEHÍCULOS (scroll horizontal) ==================== -->
     <div class="vehicles-section">

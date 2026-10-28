@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ViewWillEnter } from '@ionic/angular';
 import { AuthService, UsuarioSesion } from '../services/auth.service';
 import { NetworkService } from '../services/network.service';
+import { RegistrosService } from '../services/registros.service';
 import {
   DashboardService,
   Vehiculo,
@@ -39,11 +40,16 @@ export class DashboardPage implements OnInit, OnDestroy, ViewWillEnter {
 
   private yaEntro: boolean = false;
   private subReconexion?: Subscription;
+  private subPendientes?: Subscription;
+
+  /** Registros guardados en el celular que aún esperan enviarse al servidor. */
+  pendientes: number = 0;
 
   constructor(
     private authService: AuthService,
     private dashboardService: DashboardService,
     private network: NetworkService,
+    private registros: RegistrosService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -54,10 +60,17 @@ export class DashboardPage implements OnInit, OnDestroy, ViewWillEnter {
     // Recuperación de conexión: al volver el Internet se vuelve a consultar la API
     // (la gráfica de gastos se refresca sola, ella también escucha la reconexión)
     this.subReconexion = this.network.reconectado$.subscribe(() => this.cargarDatos());
+
+    // Contador de registros pendientes de sincronizar (viene de SQLite)
+    this.subPendientes = this.registros.pendientes$.subscribe(total => {
+      this.pendientes = total;
+      this.cdr.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {
     this.subReconexion?.unsubscribe();
+    this.subPendientes?.unsubscribe();
   }
 
   ionViewWillEnter(): void {
@@ -88,24 +101,31 @@ export class DashboardPage implements OnInit, OnDestroy, ViewWillEnter {
     this.cdr.detectChanges();
   }
 
-  /** GET /dashboard/resumen.php: vehículos, recordatorios e historial del usuario. */
-  private cargarDatos(): void {
+  /**
+   * 1) Envía a la API lo que haya quedado pendiente en el celular (SQLite).
+   * 2) GET /dashboard/resumen.php: vehículos, recordatorios e historial del usuario.
+   * 3) Suma al historial las fotos locales (las fotos solo viven en el celular).
+   */
+  private async cargarDatos(): Promise<void> {
     if (!this.usuario) {
       return;
     }
+    const idUsuario = this.usuario.id_usuario;
 
     this.cargando = true;
     this.error = null;
     this.cdr.detectChanges();
 
-    this.dashboardService.obtenerResumen(this.usuario.id_usuario).subscribe(respuesta => {
+    await this.registros.sincronizarPendientes();
+
+    this.dashboardService.obtenerResumen(idUsuario).subscribe(async respuesta => {
       this.cargando = false;
       this.desdeCache = !!respuesta.desdeCache;
 
       if (respuesta.exito) {
         this.vehiculos = respuesta.resumen.vehiculos;
         this.recordatorios = respuesta.resumen.recordatorios;
-        this.historial = respuesta.resumen.historial;
+        this.historial = await this.registros.conFotosLocales(respuesta.resumen.historial);
       } else {
         this.error = respuesta.mensaje;
         this.vehiculos = [];
@@ -135,7 +155,7 @@ export class DashboardPage implements OnInit, OnDestroy, ViewWillEnter {
   }
 
   onNuevoServicio(): void {
-    // TODO: navegar al formulario de registro de servicio
+    this.router.navigateByUrl('/nuevo-registro');
   }
 
   verTodosRecordatorios(): void {
